@@ -1,2 +1,2 @@
 angular.module('bhook.config',[])  
-  .constant('apiUrl', '@@apiUrl');
+  .constant('API_URL', 'http://localhost:3000');

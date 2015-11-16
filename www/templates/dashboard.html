@@ -5,15 +5,13 @@
 <!-- </ion-view> -->
 <ion-view view-title="bhook">
     <ion-content class="has-header" padding="true">
-        <ion-list style=""></ion-list>
-        <form style="" class="form-horizontal">
+        <form style="" class="form-horizontal" ng-submit="submitAddBook()">
             <label style="" name="addform" class="item item-input">
             	<i class="icon ion-android-add-circle placeholder-icon"></i>
-                <input ng-click="addBook" ng-models="formBookAuthorText"  ng-model-instant placeholder="" type="text" value="Add a book or author"> 
-                {{formBookAuthorText}}
+                <input ng-click="addBook()" ng-model="formBookAuthorText"   placeholder="" type="text" > 
             </label>
         </form>  
-         <button style=""   class="button button-stable button-block ">Complete list</button> 
+         <button class="button button-stable button-block ">Complete list</button> 
         
             <label style="" class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>

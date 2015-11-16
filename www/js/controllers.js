@@ -18,6 +18,25 @@ angular.module('bhook.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
+  
+  // Create the auth/book distinction modal that is used for the insertion of data 
+  // Create the login modal that we will use later
+  $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html', {
+    scope: $scope
+  }).then(function(modalauthbook) {
+    $scope.modalauthbook = modalauthbook;
+  });
+   
+  
+  // close the AuthBook modal 
+  $scope.closeAuthBookModal=  function(){
+	  $scope.modalauthbook.hide();
+  }
+  // open the AuthBookModal 
+  $scope.openAuthBookModal=  function(){
+	  $scope.modalauthbook.show();
+  }  
+  
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -40,22 +59,34 @@ angular.module('bhook.controllers', [])
     }, 1000);
   };
 })
-.controller('DashboardCtrl', function($scope,$http ,$apiUrl) {
-	  $http.get($apiUrl+'/book').then(function(resp) {
+.controller('DashboardCtrl', function($scope,$http ,API_URL) {
+	
+	  $http.get(API_URL+'/book').then(function(resp) {
 		    $scope.latestbooks = resp.data;
 		  }, function(err) {
 		    console.error('ERR', err);
-		    // err.status will contain the status code
+		   
 		 })
 	
-//	               	  $scope.latestbooks = [
-//	               		                  { title: 'Les liaisons extaordinaires' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	               		                  { title: 'Eat mushrooms', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	               		                  { title: 'Get high enough to grab the flag', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	               		                  { title: 'Find the Princess' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	               		                ];
+//  $scope.latestbooks = [
+//	                  { title: 'Les liaisons extaordinaires' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
+//	                  { title: 'Eat mushrooms', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
+//	                  { title: 'Get high enough to grab the flag', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
+//	                  { title: 'Find the Princess' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
+//	                ];
 	
-	
+		  $scope.formBookAuthorText = 'Add a book or author' ;
+		 // addbook click 
+		 $scope.addBook = function(){
+			 // remove actual text from the input .
+			 $scope.formBookAuthorText = null;
+	  	};
+	  	
+	  	$scope.submitAddBook = function(){
+	  		// show a modal dialog window to make final choice of ath/book book/auth surn/first, etc ..
+	  		$scope.openAuthBookModal();
+	  		
+	  	};
 	
 })
 .controller('PlaylistsCtrl', function($scope) {

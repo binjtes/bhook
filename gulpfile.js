@@ -62,8 +62,9 @@ gulp.task('replace', function () {
 	  var filename = env + '.json';
 	  var settings = JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
 
+	  
 	// Replace each placeholder with the correct value for the variable.  
-	gulp.src('js/config.js')  
+	gulp.src('www/js/config.settings.js')  
 	  .pipe(replace({
 	    patterns: [
 	      {
@@ -72,6 +73,9 @@ gulp.task('replace', function () {
 	      }
 	    ]
 	  }))
-	  .pipe(gulp.dest('build/js'));
+	  .pipe(rename('www/js/config.js'))
+	  .pipe(gulp.dest(''));
+	
+	
 	});
 
