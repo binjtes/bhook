@@ -24,6 +24,7 @@
           	<ion-item ng-repeat="book in latestbooks" style="" class="item-thumbnail-left">
                 <img src="{{book.thumbnail}}">
                 <h2>{{book.title}}</h2>
+                <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
                 <p >{{book.resume}}</p>
                 
             </ion-item>
