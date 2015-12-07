@@ -59,6 +59,7 @@ angular.module('starter', ['ionic','bhook.config' , 'bhook.controllers'])
       }
     })
     .state('app.dashboard', {
+    	cache: false,
         url: '/dashboard',
         views: {
           'menuContent': {

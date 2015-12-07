@@ -3,7 +3,7 @@
 <!--     <h1>Playlist</h1> -->
 <!--   </ion-content> -->
 <!-- </ion-view> -->
-<ion-view view-title="bhook">
+<ion-view view-title="bhook" cache-view="false">
     <ion-content class="has-header" padding="true">
         <form style="" class="form-horizontal" ng-submit="submitAddBook(formBookAuthorText)">
             <label style="" name="addform" class="item item-input">
@@ -21,12 +21,9 @@
             <ion-item  style="" class="item-divider">Latest wishlist</span></ion-item>
           <ion-list> 
           
-          	<ion-item ng-repeat="book in latestbooks" style="" class="item-thumbnail-left">
-                <img src="{{book.thumbnail}}">
-                <h2>{{book.title}}</h2>
+          	<ion-item ng-repeat="book in latestbooks" style="" >
+                <h2>{{book.book}}</h2>
                 <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
-                <p >{{book.resume}}</p>
-                
             </ion-item>
           
         </ion-list>
