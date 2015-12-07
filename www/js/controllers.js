@@ -1,6 +1,9 @@
 angular.module('bhook.controllers', ['bhook.services'])
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService ) {
 
+		bookService.initDB();
+
+
 	// TODO : http://ionicframework.com/docs/api/directive/ionRefresher/ ? http://blog.ionic.io/pull-to-refresh-directive/
 	 // populate latest book
 	  $scope.$on('$ionicView.enter', function(e) {
@@ -8,7 +11,7 @@ angular.module('bhook.controllers', ['bhook.services'])
 		   //Refresh list TODO : avoid new request, store the info somehow
 			bookService.getBooks().then(function(books){
 		    	 $scope.latestbooks = books ;
-		    	console.log("refresh list books ? ") ;
+		    	console.log(books) ;
 		    	 console.log($scope.latestbooks) ;
 
 
@@ -16,13 +19,6 @@ angular.module('bhook.controllers', ['bhook.services'])
 	  });
 
 
-
-//  $scope.latestbooks = [
-//	                  { title: 'Les liaisons extaordinaires' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	                  { title: 'Eat mushrooms', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	                  { title: 'Get high enough to grab the flag', author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	                  { title: 'Find the Princess' , author:'Michale henekisq', resume:'Lipsem' , thumbnail:'img/img1.jpg'},
-//	                ];
 
 		  $scope.formBookAuthorText = 'Add a book or author' ;
 		 // addbook click
