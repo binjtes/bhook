@@ -1,6 +1,6 @@
 var gulp = require('gulp');
-var replace = require('gulp-replace-task');  
-var args    = require('yargs').argv;  
+var replace = require('gulp-replace-task');
+var args    = require('yargs').argv;
 var fs      = require('fs');
 var gutil = require('gulp-util');
 var bower = require('bower');
@@ -54,7 +54,7 @@ gulp.task('git-check', function(done) {
 });
 
 
-gulp.task('replace', function () {  
+gulp.task('replace', function () {
 	  // Get the environment from the command line
 	  var env = args.env || 'localdev';
 
@@ -62,20 +62,19 @@ gulp.task('replace', function () {
 	  var filename = env + '.json';
 	  var settings = JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
 
-	  
-	// Replace each placeholder with the correct value for the variable.  
-	gulp.src('www/js/config.settings.js')  
+
+	// Replace each placeholder with the correct value for the variable.
+	gulp.src('www/js/config.settings.js')
 	  .pipe(replace({
 	    patterns: [
 	      {
-	        match: 'apiUrl',
+	        match: 'API_URL',
 	        replacement: settings.apiUrl
 	      }
 	    ]
 	  }))
 	  .pipe(rename('www/js/config.js'))
 	  .pipe(gulp.dest(''));
-	
-	
-	});
 
+
+	});

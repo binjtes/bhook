@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','bhook.config' , 'bhook.controllers'])
+angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -24,8 +24,7 @@ angular.module('starter', ['ionic','bhook.config' , 'bhook.controllers'])
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
@@ -41,20 +40,21 @@ angular.module('starter', ['ionic','bhook.config' , 'bhook.controllers'])
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.wishlist', {
+      url: '/wishlist',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/wishlist.html',
+          controller: 'WishlistCtrl'
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.readlist', {
+      url: '/readlist',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/readlist.html',
+
         }
       }
     })

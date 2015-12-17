@@ -1,7 +1,10 @@
 angular.module('bhook.controllers', ['bhook.services'])
-.controller('DashboardCtrl', function($scope,$http ,API_URL, bookService ) {
+.controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,$ionicModal ) {
 
-		bookService.initDB();
+
+   console.log('la '+ API_URL);
+   bookService.initDB(API_URL);
+
 
 
 	// TODO : http://ionicframework.com/docs/api/directive/ionRefresher/ ? http://blog.ionic.io/pull-to-refresh-directive/
@@ -9,16 +12,13 @@ angular.module('bhook.controllers', ['bhook.services'])
 	  $scope.$on('$ionicView.enter', function(e) {
 			console.log("$ionicView.enter") ;
 		   //Refresh list TODO : avoid new request, store the info somehow
-			bookService.getBooks().then(function(books){
+			bookService.getLatestBooks().then(function(books){
 		    	 $scope.latestbooks = books ;
-		    	console.log(books) ;
-		    	 console.log($scope.latestbooks) ;
 
-
+           console.log("new books added ?");
+           console.log(books);
 		    });
 	  });
-
-
 
 		  $scope.formBookAuthorText = 'Add a book or author' ;
 		 // addbook click
@@ -32,6 +32,63 @@ angular.module('bhook.controllers', ['bhook.services'])
 	  		$scope.openAuthBookModal(formBookAuthorText);
 
 	  	};
+
+      $scope.testaddBook = function(){
+        console.log($scope.bookService);
+        var book2 = {
+          _id : new Date() + "chinua-achebe-le-monde-s-effondre",
+          author_firstname: new Date() + "Chinua",
+          author_lastname: "Achebe",
+          book: "Le monde s'effondre" ,
+          added:  new Date() ,
+          toread : true } ;
+
+         bookService.addBook(book2).then(function(book){
+             bookService.getLatestBooks().then(function(books){
+                console.log("from within function :new books added ?");
+                console.log(books);
+                $scope.latestbooks = books ;
+                console.log($scope.latestbooks );
+       		    });
+     	  });
+      };
+      $scope.resetdb = function(){
+      bookService.resetDb();
+
+      // populate
+
+      var book1 = {
+        _id : "andersen-hans-christian-contes",
+        author_firstname: "Hans Christian",
+        author_lastname: "Andersen",
+        book: "Contes" ,
+        added:  "2015-12-13T17:33:02.276Z",
+        toread : true } ;
+        bookService.addBook(book1) ;
+        var book2 = {
+          _id : "chinua-achebe-le-monde-s-effondre",
+          author_firstname: "Chinua",
+          author_lastname: "Achebe",
+          book: "Le monde s'effondre" ,
+          added:  new Date() ,
+          toread : true } ;
+
+         bookService.addBook(book2) ;
+       }
+
+
+})
+.controller('WishlistCtrl', function($scope,$http ,API_URL, bookService ) {
+  bookService.initDB(API_URL);
+
+	bookService.getBooks().then(function(books){
+			 $scope.latestbooks = books ;
+			 console.log(books) ;
+			 console.log($scope.latestbooks) ;
+
+
+		});
+
 
 
 
@@ -95,6 +152,9 @@ angular.module('bhook.controllers', ['bhook.services'])
 	  delete  $scope.submitData.author ;
 	  // add timestamp
 	  $scope.submitData['added'] = new Date();
+    // build the id using alphabetical order
+    $scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'];
+    // the id is the author name plus
 	  console.log($scope.submitData) ;
 	  //add the book
 	  bookService.addBook($scope.submitData).then(function(book){
@@ -235,6 +295,5 @@ angular.module('bhook.controllers', ['bhook.services'])
     { title: 'Cowbell', id: 6 }
   ];
 })
-
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });

@@ -1,2 +1,2 @@
-angular.module('bhook.config',[])  
-  .constant('apiUrl', '@@apiUrl');
+angular.module('bhook.config',[])
+  .constant('API_URL', '@@apiUrl');

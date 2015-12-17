@@ -1,32 +1,30 @@
-<!-- <ion-view view-title="Playlist"> -->
-<!--   <ion-content> -->
-<!--     <h1>Playlist</h1> -->
-<!--   </ion-content> -->
-<!-- </ion-view> -->
 <ion-view view-title="bhook" cache-view="false">
     <ion-content class="has-header" padding="true">
         <form style="" class="form-horizontal" ng-submit="submitAddBook(formBookAuthorText)">
             <label style="" name="addform" class="item item-input">
             	<i class="icon ion-android-add-circle placeholder-icon"></i>
-                <input ng-click="addBook()" ng-model="formBookAuthorText"   placeholder="" type="text" > 
+                <input ng-click="addBook()" ng-model="formBookAuthorText"   placeholder="" type="text" >
             </label>
-        </form>  
-         <button class="button button-stable button-block ">Complete list</button> 
-        
+        </form>
+         <button class="button button-stable button-block " ng-click="testaddBook()">wish list </button>
+         <button class="button button-stable button-block " ng-click="resetdb()">reset db  </button>
+
             <label style="" class="item item-input">
+
                 <i class="icon ion-search placeholder-icon"></i>
                 <input placeholder="Search" type="search">
             </label>
             <div style="width: 300px; height: 31px;" class="spacer"></div>
-            <ion-item  style="" class="item-divider">Latest wishlist</span></ion-item>
-          <ion-list> 
-          
+            <ion-item  style="" class="item-divider">Latest from  wishlist</span></ion-item>
+          <ion-list>
+
           	<ion-item ng-repeat="book in latestbooks" style="" >
                 <h2>{{book.book}}</h2>
                 <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
+
             </ion-item>
-          
+
         </ion-list>
-       
+
     </ion-content>
 </ion-view>
