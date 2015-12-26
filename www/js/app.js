@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
+angular.module('starter', ['ionic', 'pascalprecht.translate','bhook.config','bhook.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,8 +21,15 @@ angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
     }
   });
 })
+.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
-.config(function($stateProvider, $urlRouterProvider) {
+$translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+	for(lang in translations){
+		$translateProvider.translations(lang, translations[lang]);
+	}
+
+	$translateProvider.preferredLanguage('fr');
+
   $stateProvider
   .state('app', {
     url: '/app',
@@ -30,16 +37,6 @@ angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
   .state('app.wishlist', {
       url: '/wishlist',
       views: {
@@ -59,7 +56,6 @@ angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
       }
     })
     .state('app.dashboard', {
-    	cache: false,
         url: '/dashboard',
         views: {
           'menuContent': {
@@ -68,7 +64,14 @@ angular.module('starter', ['ionic','bhook.config','bhook.controllers'])
           }
         }
       })
-
+      .state('app.settings', {
+        url: '/settings',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/settings.html'
+          }
+        }
+      })
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {

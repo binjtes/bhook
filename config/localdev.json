@@ -1,3 +1,7 @@
 {
   "apiUrl":"http://127.0.0.1:5984"
+},
+{
+  "wikipedia-en" : "https://en.wikipedia.org/w/api.php",
+  "wikipedia-fr" : "https://nl.wikipedia.org/w/api.php"
 }

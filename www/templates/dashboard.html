@@ -1,21 +1,22 @@
-<ion-view view-title="bhook" cache-view="false">
+<ion-view view-title="bhook" class="assertive">
     <ion-content class="has-header" padding="true">
         <form style="" class="form-horizontal" ng-submit="submitAddBook(formBookAuthorText)">
-            <label style="" name="addform" class="item item-input">
+            <label style="" name="addform" class="item item-input" >
             	<i class="icon ion-android-add-circle placeholder-icon"></i>
-                <input ng-click="addBook()" ng-model="formBookAuthorText"   placeholder="" type="text" >
+                <input ng-click="addBook()" ng-model="formBookAuthorText"   placeholder="{{ 'add_a_book' | translate }}" type="text">
             </label>
         </form>
-         <button class="button button-stable button-block " ng-click="testaddBook()">wish list </button>
-         <button class="button button-stable button-block " ng-click="resetdb()">reset db  </button>
+      <!--   <button class="button button-stable button-block " ng-click="testaddBook()">wish list </button>
+         <button class="button button-stable button-block " ng-click="resetdb()">reset db  </button>-->
 
-            <label style="" class="item item-input">
+            <label style="" class="item item-input label-assertive">
 
                 <i class="icon ion-search placeholder-icon"></i>
-                <input placeholder="Search" type="search">
+                <input placeholder="{{ 'search' | translate }}" type="search">
             </label>
             <div style="width: 300px; height: 31px;" class="spacer"></div>
-            <ion-item  style="" class="item-divider">Latest from  wishlist</span></ion-item>
+            <ion-item  style="" class="item-divider" translate="latest_books" >Latest from  wishlist</span></ion-item>
+
           <ion-list>
 
           	<ion-item ng-repeat="book in latestbooks" style="" >

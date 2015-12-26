@@ -1,1 +1,11 @@
 /* Empty. Add your own CSS if you like */
+
+.alphabetlist h2{
+  padding-bottom : 0.2em;
+}
+
+.alphabetlist:first-letter {
+   text-transform: capitalize;
+  color: red;
+  font-size: 130%;
+}

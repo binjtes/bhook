@@ -1,12 +1,13 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content>
-    <ion-nav-bar class="bar-stable">
+    <ion-nav-bar class="bar-energized">
       <ion-nav-back-button>
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        <button class="button button-icon button-clear  ion-navicon" menu-toggle="left">
         </button>
+        <img class="title-image" src="img/icon.png" width="30" height="30" />
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
@@ -14,24 +15,24 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable">
-      <h1 class="title">Left</h1>
+      <h1 class="title">{{ 'menu' | translate }}</h1>
     </ion-header-bar>
     <ion-content>
       <ion-list>
         <ion-item menu-close href="#/app/dashboard">
-          Main page
+          <i class="icon ion-home placeholder-icon"></i>{{ 'main_page' | translate }}
         </ion-item>
         <ion-item menu-close ng-click="login()">
-          Login
-        </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+        <i class="icon ion-social-reddit placeholder-icon"></i>  {{ 'login' | translate }}
         </ion-item>
         <ion-item menu-close href="#/app/wishlist">
-          To read wish list
+        <i class="icon ion-ios-glasses-outline placeholder-icon"></i>{{ 'to_read_list' | translate }}
         </ion-item>
         <ion-item menu-close href="#/app/readlist">
-          Already Read list
+      <i class="icon ion-ios-glasses placeholder-icon"></i>  {{ 'already_read_list' | translate }}
+        </ion-item>
+        <ion-item menu-close href="#/app/settings">
+    <i class="icon ion-gear-b placeholder-icon"></i>  {{ 'settings' | translate }}
         </ion-item>
       </ion-list>
     </ion-content>

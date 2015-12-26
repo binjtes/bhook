@@ -1,13 +1,12 @@
-<ion-view view-title="Playlist">
-  <ion-content>
-    <h1>wish list</h1>
-    <h4>all those books i never have the time to read</h4>
-    <ion-list>
+<ion-view view-title="bhook - {{ 'to_read_list' | translate }}">
+  <ion-content class="has-header" padding="true">
+    <h4><i>{{ 'to_real_list_explain' | translate }} </i></h4>
+    <ion-list show-delete="false" can-swipe="true">
 
-      <ion-item ng-repeat="book in latestbooks" style="" >
-          <h2>{{book.book}}</h2>
-          <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
-
+      <ion-item ng-repeat="book in wishlist" class="alphabetlist" >
+          <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
+          <h4>{{book.book}}  </h4>
+           <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteBook($index)"></ion-option-button>
       </ion-item>
 
   </ion-list>
