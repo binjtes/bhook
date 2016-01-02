@@ -9,3 +9,9 @@
   color: red;
   font-size: 130%;
 }
+
+
+/*override button background color in header bar, - didn't manage to do it in sass*/
+.button-energized{
+  color : #000000 !important ;
+}
