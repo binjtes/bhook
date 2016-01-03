@@ -1,33 +1,11 @@
 <ion-modal-view >
   <ion-header-bar>
-    <h1 class="title">Add a book and his author</h1>
+    <h1 class="title">{{ 'add a book and his author' | translate }}</h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeAuthBookModal()">Close</button>
+      <button class="button button-clear" ng-click="closeAuthBookModal()">{{ 'close' | translate }}</button>
     </div>
   </ion-header-bar>
   <ion-content>
-    <form >
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Author</span>
-          <input type="text" id="author"  ng-model="submitData.author">
-        </label>
-        <label class="item">
-          <button id="move"  ng-click="movetext()" ng-class="arrowDirectionClass"  class="button button-block button-calm icon " >Move</button>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Book</span>
-          <input type="text" id="book" ng-model="submitData.book">
-        </label>
-        <ion-list>
-          <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-checked="true">  {{ 'to_read' | translate }}</ion-checkbox>
-        </ion-list>
-
-      </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit" ng-click="prepareAuthData()" >Add</button>
-        </label>
-      </div>
-    </form>
+    <form distribute-input />
   </ion-content>
 </ion-modal-view>

@@ -12,9 +12,11 @@ var translations = {
     "login": "Login",
     "to_real_list_explain" : "all those books i never have the time to read",
 
+
 	},
 	"fr": {
 		"menu": "menu",
+		"close": "fermer",
 		"add_a_book": "Ajouter un livre",
 		"latest_books": "Derniers livres ajoutés",
 		"search": "Chercher",
@@ -26,6 +28,16 @@ var translations = {
     "login": "Se connecter",
     "to_real_list_explain" : "",
     "english" : "Anglais",
-    "french" : "Français"
+    "french" : "Français",
+		"book" : "livre",
+		"author" : "auteur",
+		"continue" : "continuer",
+		"move" : "déplacer",
+		"add":"ajouter",
+		"add a book and his author": "ajouter un livrer et son auteur",
+		"first name": "prénom",
+		"last name" : "nom" ,
+		"add author details" : "détails sur l'auteur"
+
 	}
 }

@@ -70,91 +70,10 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 					$scope.modalauth.hide();
 					console.log($scope.data.formBookAuthorText) ;
 					$scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-
 					// erg .. does not refresh ?
 					console.log($scope.data.formBookAuthorText) ;
-
 	 		});
 	 }
-	 // move text between input text to make author/book distinct before commit
-	 $scope.movetext= function(authoronly){
-
- 		if(authoronly){
-
- 				// clean up double spaces, empty values
- 				$scope.submitData.author_firstname = $scope.submitData.author_firstname.split(/[\s+]+/gm).filter(Boolean).join(" ");
- 				$scope.submitData.author_lastname = $scope.submitData.author_lastname.split(/[\s+]+/gm).filter(Boolean).join(" ");
- 				// count number of words
- 				var firstnameln = $scope.submitData.author_firstname.split(/[\s+]+/gm).length ;
- 				var lastnameln = $scope.submitData.author_lastname.split(/[\s+]+/gm).length ;
- 				// additional filter
- 				var fnarr = $scope.submitData.author_firstname.split(/[\s+]+/gm).filter(Boolean);
- 				var lnarr = $scope.submitData.author_lastname.split(/[\s+]+/gm).filter(Boolean);
- 					if (fnarr.length	> 0 &&	$scope.sensetogo == "right") {
- 						lnarr.unshift(fnarr[fnarr.length - 1]);
- 						fnarr.pop();
- 					} else {
- 							 $scope.sensetogo = "left";
- 							if (lnarr.length	> 0 &&	$scope.sensetogo == "left") {
- 								 fnarr.unshift(lnarr[lnarr.length - 1]);
- 								 lnarr.pop();
-
- 							}else{
- 							 $scope.sensetogo = "right";
- 							}
- 					}
- 					firstnameln = fnarr.length ;
- 					lastnameln = lnarr.length ;
- 					// restitute input value
- 					$scope.submitData.author_firstname = fnarr.join(" ");
- 					$scope.submitData.author_lastname = lnarr.join(" ");
- 					// change arrow direction
- 					if(firstnameln == 0 ){
- 						$scope.arrowDirectionClass = "ion-arrow-up-c";
- 					}
- 					if(lastnameln == 0 ){
- 						$scope.arrowDirectionClass = "ion-arrow-down-c";
- 					}
- 			return ;
- 		}
- 			// clean up double spaces, empty values
- 			$scope.submitData.author = $scope.submitData.author.split(/[\s+]+/gm).filter(Boolean).join(" ");
- 			$scope.submitData.book = $scope.submitData.book.split(/[\s+]+/gm).filter(Boolean).join(" ");
- 			// count number of words
- 			var authorln = $scope.submitData.author.split(/[\s+]+/gm).length ;
- 			var bookln = $scope.submitData.book.split(/[\s+]+/gm).length ;
- 			// additional filter
- 			var autharr = $scope.submitData.author.split(/[\s+]+/gm).filter(Boolean);
- 			var bookarr = $scope.submitData.book.split(/[\s+]+/gm).filter(Boolean);
-				 if (autharr.length	> 0 &&	$scope.sensetogo == "right") {
-						 bookarr.unshift(autharr[autharr.length - 1]);
-						 autharr.pop();
-				 } else {
-							$scope.sensetogo = "left";
-						 if (bookarr.length	> 0 &&	$scope.sensetogo == "left") {
-								 autharr.unshift(bookarr[bookarr.length - 1]);
-								 bookarr.pop();
-
-						 }else{
-							$scope.sensetogo = "right";
-						 }
-				 }
-				 authorln = autharr.length ;
-				 bookln = bookarr.length ;
-				 // restitute input value
-				 $scope.submitData.author = autharr.join(" ");
-				 $scope.submitData.book = bookarr.join(" ");
-				 // change arrow direction
-				 if(authorln==0 ){
-				 	$scope.arrowDirectionClass = "ion-arrow-up-c";
-				 }
-				 if(bookln==0 ){
-				 	$scope.arrowDirectionClass = "ion-arrow-down-c";
-				 }
-	 };
-
-
-
 	 // open the AuthModal
 	 $scope.openAuthModal=	function(){
  		$scope.modalauth.show();
@@ -169,7 +88,7 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
 			console.log("$ionicView.enter") ;
-			//debuggin directive 
+			//debuggin directive
 			$scope.openModalAuthBook();
 
 
@@ -180,15 +99,12 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 	 		 });
  		});
 
-
-
 		 // addbook click - beginning of the input
 		 $scope.addBook = function(){
 			 // remove actual text from the input .
 			 $scope.data.formBookAuthorText = null;
 
 			};
-
 
 /************* debug functions *****************/
 			$scope.testaddBook = function(){

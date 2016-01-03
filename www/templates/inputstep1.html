@@ -1,0 +1,22 @@
+<div class="list">
+  <label class="item item-input">
+    <span class="input-label">{{ 'author' | translate }}</span>
+    <input type="text" id="author"  ng-model="submitData.author">
+  </label>
+  <label class="item">
+    <button id="move"  ng-click="movetext()" ng-class="arrowDirectionClass"  class="button button-block button-calm icon " >{{ 'move' | translate }}</button>
+  </label>
+  <label class="item item-input">
+    <span class="input-label">{{ 'book' | translate }}</span>
+    <input type="text" id="book" ng-model="submitData.book">
+  </label>
+  <ion-list>
+    <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-checked="true">  {{ 'to_read' | translate }}</ion-checkbox>
+  </ion-list>
+
+</label>
+  <label class="item">
+    <button class="button button-block button-positive" type="submit" ng-click="prepareAuthData()" >{{ 'continue' | translate }}</button>
+  </label>
+</div>
+</form>
