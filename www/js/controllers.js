@@ -1,8 +1,13 @@
-angular.module('bhook.controllers', ['bhook.services'])
+angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,$ionicModal,$translate ) {
 	 bookService.initDB(API_URL);
+
+	 //data to populate a book object
 	 $scope.submitData= {};
-   $scope.formBookAuthorText = $translate.instant("add_a_book") ;
+	 // other data values binded into controller
+	 $scope.data= {};
+
+	 $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
   // $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
 	 // the first skip for the latest book list is the first 8 already called by default
 	 // purpose :TODO infinite scrolling
@@ -23,20 +28,28 @@ angular.module('bhook.controllers', ['bhook.services'])
 		 scope: $scope
 	 }).then(function(modalauth) {
 		 $scope.modalauth = modalauth;
-
 	 });
-
+	 // opens a modal dialog window to sort values b/n  auth/book book/auth surn/firstname, to read true/false ..
+	 $scope.openModalAuthBook = function(){
+		 $scope.modalauthbook.show();
+		 $scope.arrowDirectionClass = "ion-arrow-down-c";
+		 $scope.sensetogo = "right"
+		 $scope.submitData.author= $scope.data.formBookAuthorText.split(/[\s+]+/gm).filter(Boolean).join(" "); ;
+		 $scope.submitData.book = "" ;
+	 };
 
 	 // close the AuthBook modal
 	 $scope.closeAuthBookModal=	function(){
- 		$scope.modalauthbook.hide();
+		 $scope.modalauthbook.hide();
 	 }
-
+	 $scope.closeAuthModal=	function(){
+		 $scope.modalauth.hide();
+	 }
 	 // prepare author data
 	 $scope.prepareAuthData = function(){
  		$scope.modalauthbook.hide();
  		// we need the firstname/lastname distinction for an author
- 		$scope.openAuthModal($scope.submitData.author);
+ 		$scope.openAuthModal();
 	 }
 
 
@@ -55,11 +68,11 @@ angular.module('bhook.controllers', ['bhook.services'])
 	 		bookService.addBook($scope.submitData).then(function(book){
 				  $scope.latestbooks.unshift($scope.submitData) ;
 					$scope.modalauth.hide();
-					console.log($scope.formBookAuthorText) ;
-					$scope.formBookAuthorText = $translate.instant("add_a_book") ;
+					console.log($scope.data.formBookAuthorText) ;
+					$scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
 
 					// erg .. does not refresh ?
-					console.log($scope.formBookAuthorText) ;
+					console.log($scope.data.formBookAuthorText) ;
 
 	 		});
 	 }
@@ -140,21 +153,14 @@ angular.module('bhook.controllers', ['bhook.services'])
 				 }
 	 };
 
-	 // open the AuthBookModal
-	 $scope.openAuthBookModal=	function(formBookAuthorText){
- 		$scope.modalauthbook.show();
- 		$scope.arrowDirectionClass = "ion-arrow-down-c";
- 		$scope.sensetogo = "right"
- 		$scope.submitData.author= formBookAuthorText.split(/[\s+]+/gm).filter(Boolean).join(" "); ;
- 		$scope.submitData.book = "" ;
-	 }
+
 
 	 // open the AuthModal
-	 $scope.openAuthModal=	function(scopesubmitDataauthor){
+	 $scope.openAuthModal=	function(){
  		$scope.modalauth.show();
  		$scope.arrowDirectionClass = "ion-arrow-down-c";
  		$scope.sensetogo = "right" ;
- 		$scope.submitData.author_firstname = scopesubmitDataauthor.split(/[\s+]+/gm).filter(Boolean).join(" ");
+ 		$scope.submitData.author_firstname = $scope.submitData.author.split(/[\s+]+/gm).filter(Boolean).join(" ");
  		$scope.submitData.author_lastname = "" ;
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
 	 }
@@ -163,7 +169,11 @@ angular.module('bhook.controllers', ['bhook.services'])
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
 			console.log("$ionicView.enter") ;
-			 //Refresh list when entering the view
+			//debuggin directive 
+			$scope.openModalAuthBook();
+
+
+			 //Refresh list when entering the view, an item can have been updated/deleted in another controller
 			 bookService.getLatestBooks().then(function(bookssortedbydate){
 	 				$scope.latestbooks = bookssortedbydate ;
 	 				 console.log(bookssortedbydate);
@@ -175,13 +185,11 @@ angular.module('bhook.controllers', ['bhook.services'])
 		 // addbook click - beginning of the input
 		 $scope.addBook = function(){
 			 // remove actual text from the input .
-			 $scope.formBookAuthorText = null;
+			 $scope.data.formBookAuthorText = null;
+
 			};
 
-			$scope.submitAddBook = function(formBookAuthorText){
-				// show a modal dialog window to make final choice of ath/book book/auth surn/firstname, to read true/false ..
-				$scope.openAuthBookModal(formBookAuthorText);
-			};
+
 /************* debug functions *****************/
 			$scope.testaddBook = function(){
 
