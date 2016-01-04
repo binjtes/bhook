@@ -10,13 +10,16 @@
     <span class="input-label">{{ 'book' | translate }}</span>
     <input type="text" id="book" ng-model="submitData.book">
   </label>
-  <ion-list>
-    <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-checked="true">  {{ 'to_read' | translate }}</ion-checkbox>
-  </ion-list>
-
+  <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-init="checked=true" ng-click="toggleAdditionalForm()">  {{ 'to_read' | translate }}</ion-checkbox>
+    <div class="list" ng-model="rating" ng-show="submitData.toread == 'NO'" >
+    <rating ng-model="submitData.rate"  max="max" ></rating>
+    <label class="item item-input">
+    <textarea placeholder="{{ 'comment' | translate }}" ng-model="submitData.comment" ></textarea>
+ </label>
 </label>
   <label class="item">
     <button class="button button-block button-positive" type="submit" ng-click="prepareAuthData()" >{{ 'continue' | translate }}</button>
   </label>
+</div>
 </div>
 </form>

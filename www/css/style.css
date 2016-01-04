@@ -15,3 +15,21 @@
 .button-energized{
   color : #000000 !important ;
 }
+
+
+  /* rating stars from /lib/ionic-rating */
+ul.rating{
+  color:#ffed52 !important ;
+  padding: 10px;
+  text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(1,1,1,1);
+}
+ul.rating li {
+  display: inline;
+  border: 0px;
+  background: none;
+  padding: 5px 10px;
+}
+ul.rating li i {
+  font-size: 30px;
+}
+/*end ionic rating*/

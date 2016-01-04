@@ -37,7 +37,8 @@ var translations = {
 		"add a book and his author": "ajouter un livrer et son auteur",
 		"first name": "prénom",
 		"last name" : "nom" ,
-		"add author details" : "détails sur l'auteur"
+		"add author details" : "détails sur l'auteur",
+		"comment" :"commentaire"
 
 	}
 }

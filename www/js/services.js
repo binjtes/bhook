@@ -8,6 +8,7 @@ function bookService($q){
     emit({added : doc.added , author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book , _id:doc._id, toread:doc.toread});
   }
   var mapAuthLastName = function(doc){
+    if(doc.toread == true)
     emit({author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book ,added : doc.added ,  _id:doc._id, toread:doc.toread});
   }
   return {
@@ -49,24 +50,18 @@ function bookService($q){
 		  }
 		} ,
 		getLatestBooks: function(skip){
-      // only query once
-
       			return $q.when(_db.query( map ,{
               descending : true,
               skip: skip ,
               limit : 20
             }))
               .then(function(books) {
-                console.log('entering query');
-      	    			console.log(books);
-                  console.log('**entering query');
                   var booksbydate ;
       	    			booksbydate = books.rows.map(function(row) {
                     console.log("row:");
                     console.log(row);
       	    				return row['key'];
       	          });
-
       	          return booksbydate;
       	    	}).catch(function (err) {
       	    		console.log(err);
@@ -94,52 +89,7 @@ function bookService($q){
 
 
 		},
-		getAllBooks: function(){
-	    	var options =   {descending : true,include_docs: true } ;
-	    	return $q.when(_db.allDocs(options))
-	    	.then(function(books) {
-	    			console.log(books);
-            var books ;
-	    			books = books.rows.map(function(row) {
-	    				return row['doc'];
-	          });
-	          return books;
-	    	}).catch(function (err) {
-	    		console.log(err);
-	    	});
-		},
-
-		getBooks: function(){
-					return $q.when(_db.allDocs({ include_docs: true}))
-					.then(function(books) {
-						console.log(books);
-						_books = books.rows.map(function(row) {
-								return row['doc'];
-						});
-						return _books;
-				 }).catch(function (err) {
-				  console.log(err);
-				});
-	},
-
-   getBooksWishList: function(){
-         if (!_books) {
-           return $q.when(_db.allDocs({ include_docs: true}))
-           .then(function(books) {
-             console.log(books);
-             _books = books.rows.map(function(row) {
-               return row['doc'];
-               });
-               return _books;
-          }).catch(function (err) {
-           console.log(err);
-         });
-        } else {
-         // Return cached data as a promise
-         return $q.when(_books);
-     }
-
-   },
+   /* unused  */
 		getBook: function(){
 			  return $http.get(API_URL+'/book').then(function(resp) {
 				    return resp.data;

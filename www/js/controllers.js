@@ -1,7 +1,11 @@
-angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
+angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.rating'])
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,$ionicModal,$translate ) {
 	 bookService.initDB(API_URL);
 
+
+	 // set the rate and max variable for ionic rating
+   $scope.rate = 3;
+   $scope.max = 5;
 	 //data to populate a book object
 	 $scope.submitData= {};
 	 // other data values binded into controller
@@ -29,9 +33,19 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 	 }).then(function(modalauth) {
 		 $scope.modalauth = modalauth;
 	 });
+
+
+	 // addbook click - beginning of the input
+	 $scope.addBook = function(){
+		 // remove actual text from the input .
+		 $scope.data.formBookAuthorText = null;
+
+		};
+
 	 // opens a modal dialog window to sort values b/n  auth/book book/auth surn/firstname, to read true/false ..
 	 $scope.openModalAuthBook = function(){
 		 $scope.modalauthbook.show();
+		 $scope.submitData.toread = 'YES';
 		 $scope.arrowDirectionClass = "ion-arrow-down-c";
 		 $scope.sensetogo = "right"
 		 $scope.submitData.author= $scope.data.formBookAuthorText.split(/[\s+]+/gm).filter(Boolean).join(" "); ;
@@ -62,16 +76,24 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 	 		$scope.submitData['added'] = new Date();
 			// build the id using alphabetical order
 			$scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'].toLowerCase();
+
+      // field toread :change YES/NO for true false in database
+			if($scope.submitData.toread == 'YES'){
+				$scope.submitData.toread = true ;
+	 			//unset comments and star rating
+				delete $scope.submitData.comment ;
+				delete $scope.submitData.rating ;
+
+			} else{
+				$scope.submitData.toread = false ;
+			}
 			 // the id is the author name plus
 	 		console.log($scope.submitData) ;
 	 		//add the book
 	 		bookService.addBook($scope.submitData).then(function(book){
 				  $scope.latestbooks.unshift($scope.submitData) ;
 					$scope.modalauth.hide();
-					console.log($scope.data.formBookAuthorText) ;
 					$scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-					// erg .. does not refresh ?
-					console.log($scope.data.formBookAuthorText) ;
 	 		});
 	 }
 	 // open the AuthModal
@@ -99,12 +121,7 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives'])
 	 		 });
  		});
 
-		 // addbook click - beginning of the input
-		 $scope.addBook = function(){
-			 // remove actual text from the input .
-			 $scope.data.formBookAuthorText = null;
 
-			};
 
 /************* debug functions *****************/
 			$scope.testaddBook = function(){
