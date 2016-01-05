@@ -173,8 +173,35 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 
 
 		$scope.$on('$ionicView.enter', function(e) {
-				bookService.getBooksAlphabeticalOnAuthor().then(function(books){
+				bookService.getToRead().then(function(books){
 						 $scope.wishlist = books ;
+						 console.log(books) ;
+					}).catch(function (err){
+							console.log(err);
+					});
+		});
+
+
+		$scope.deleteBook = function(index){
+			bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book){
+				console.log(book);
+				$scope.wishlist.splice(index, 1);
+
+			});
+
+
+		}
+
+
+
+
+})
+.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService ) {
+	bookService.initDB(API_URL);
+
+		$scope.$on('$ionicView.enter', function(e) {
+				bookService.getAlreadyRead().then(function(books){
+						 $scope.readlist = books ;
 						 console.log(books) ;
 					}).catch(function (err){
 							console.log(err);

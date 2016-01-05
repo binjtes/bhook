@@ -51,6 +51,7 @@ $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
       views: {
         'menuContent': {
           templateUrl: 'templates/readlist.html',
+          controller: 'ReadlistCtrl'
 
         }
       }

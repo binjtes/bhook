@@ -7,10 +7,19 @@ function bookService($q){
   var map = function(doc){
     emit({added : doc.added , author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book , _id:doc._id, toread:doc.toread});
   }
-  var mapAuthLastName = function(doc){
-    if(doc.toread == true)
-    emit({author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book ,added : doc.added ,  _id:doc._id, toread:doc.toread});
+  var mapAuthLastNameToRead = function(doc){
+   if(doc.toread != false ){
+      emit({author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book ,added : doc.added ,  _id:doc._id});
+    }
+ }
+  var mapAuthLastNameRead = function(doc){
+    if(doc.toread == false){
+      emit({author_lastname: doc.author_lastname , author_firstname:doc.author_firstname, book:doc.book ,added : doc.added ,  _id:doc._id});
+      // should i use this simplification and how ?emit([doc.author_lastname ,doc.author_firstname, doc.book] ,doc);
+    }
   }
+
+
   return {
 	   initDB: function(API_URL){
        if(_db == undefined){
@@ -49,27 +58,10 @@ function bookService($q){
 
 		  }
 		} ,
-		getLatestBooks: function(skip){
-      			return $q.when(_db.query( map ,{
-              descending : true,
-              skip: skip ,
-              limit : 20
-            }))
-              .then(function(books) {
-                  var booksbydate ;
-      	    			booksbydate = books.rows.map(function(row) {
-                    console.log("row:");
-                    console.log(row);
-      	    				return row['key'];
-      	          });
-      	          return booksbydate;
-      	    	}).catch(function (err) {
-      	    		console.log(err);
-      	    	});
+    getAlreadyRead: function(){
+			return $q.when(_db.query( mapAuthLastNameRead ,{
 
-		},
-    getBooksAlphabeticalOnAuthor: function(){
-			return $q.when(_db.query( mapAuthLastName ,{
+
       }))
         .then(function(books) {
           console.log('entering query');
@@ -89,6 +81,48 @@ function bookService($q){
 
 
 		},
+    getToRead: function(){
+			return $q.when(_db.query( mapAuthLastNameToRead ,{
+      }))
+        .then(function(books) {
+          console.log('entering query');
+	    			console.log(books);
+              console.log('**entering query');
+              var booksbyauthorname ;
+	    			  booksbyauthorname = books.rows.map(function(row) {
+              console.log("row:");
+              console.log(row);
+	    				return row['key'];
+	          });
+
+	          return booksbyauthorname;
+	    	}).catch(function (err) {
+	    		console.log(err);
+	    	});
+
+
+		},
+		getLatestBooks: function(skip){
+      			return $q.when(_db.query( map ,{
+              descending : true,
+              skip: skip ,
+              limit : 20
+            }))
+              .then(function(books) {
+                  var booksbydate ;
+      	    			booksbydate = books.rows.map(function(row) {
+                    console.log("row:");
+                    console.log(row);
+      	    				return row['key'];
+      	          });
+      	          return booksbydate;
+      	    	}).catch(function (err) {
+      	    		console.log(err);
+      	    	});
+
+		},
+
+
    /* unused  */
 		getBook: function(){
 			  return $http.get(API_URL+'/book').then(function(resp) {
