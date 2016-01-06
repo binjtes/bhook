@@ -106,7 +106,7 @@ function bookService($q){
       			return $q.when(_db.query( map ,{
               descending : true,
               skip: skip ,
-              limit : 20
+              limit : 4
             }))
               .then(function(books) {
                   var booksbydate ;

@@ -24,6 +24,10 @@
                 <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
 
             </ion-item>
+            <ion-infinite-scroll ng-if="!end"
+                on-infinite="loadMore()"
+                distance="25%">
+              </ion-infinite-scroll>
 
         </ion-list>
 

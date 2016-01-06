@@ -105,23 +105,36 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
  		$scope.submitData.author_lastname = "" ;
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
 	 }
-
+   $scope.latestbooks = [];
 	// TODO implement : http://ionicframework.com/docs/api/directive/ionRefresher/ ? http://blog.ionic.io/pull-to-refresh-directive/
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
 			console.log("$ionicView.enter") ;
 			//debuggin directive
-			$scope.openModalAuthBook();
+			//$scope.openModalAuthBook();
 
 
 			 //Refresh list when entering the view, an item can have been updated/deleted in another controller
-			 bookService.getLatestBooks().then(function(bookssortedbydate){
+			/* bookService.getLatestBooks().then(function(bookssortedbydate){
 	 				$scope.latestbooks = bookssortedbydate ;
+					console.log("first adding");
 	 				 console.log(bookssortedbydate);
-	 		 });
+	 		 }).then($scope.loadMore());*/
  		});
 
-
+		// infinite scrolling
+		$scope.end = false ;
+		$scope.loadMore = function() {
+				skip = $scope.latestbooks ? $scope.latestbooks.length : 0 ;
+				bookService.getLatestBooks(skip).then(function(bookssortedbydate){
+					if(bookssortedbydate.length == 0) {
+						$scope.end = true ;
+					}
+					Array.prototype.push.apply($scope.latestbooks,bookssortedbydate);
+				}).finally(function(){
+						 $scope.$broadcast('scroll.infiniteScrollComplete');
+					});
+	  };
 
 /************* debug functions *****************/
 			$scope.testaddBook = function(){
