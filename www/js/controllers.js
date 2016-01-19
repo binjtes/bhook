@@ -1,9 +1,14 @@
-angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.rating'])
-.controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,$ionicModal,$translate ) {
+angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
+.controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,settingsService,$ionicModal,$translate ) {
 	 bookService.initDB(API_URL);
 
+	 // resolve settings
+   settingsService.initDB(); // only local
+	 settingsService.getLanguage().then(function(language){
+		 $translate.use(language) ;
+	 });
 
-	 // set the rate and max variable for ionic rating
+	 	 // set the rate and max variable for ionic rating
    $scope.rate = 3;
    $scope.max = 5;
 	 //data to populate a book object
@@ -14,8 +19,7 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 	 $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
   // $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
 	 // the first skip for the latest book list is the first 8 already called by default
-	 // purpose :TODO infinite scrolling
-	 $scope.latestbooksSkip = 0;
+
 	 // Create the auth/book distinction modal that is used before the insertion of data
 	 $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html',function($ionicModal) {
  			$scope.modalauthbook = $ionicModal;
@@ -115,17 +119,23 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 
 
 			 //Refresh list when entering the view, an item can have been updated/deleted in another controller
-			/* bookService.getLatestBooks().then(function(bookssortedbydate){
+			 bookService.getLatestBooks(0).then(function(bookssortedbydate){
 	 				$scope.latestbooks = bookssortedbydate ;
+					$scope.end = false ;
 					console.log("first adding");
-	 				 console.log(bookssortedbydate);
-	 		 }).then($scope.loadMore());*/
+	 				console.log(bookssortedbydate);
+	 		 });
  		});
 
 		// infinite scrolling
 		$scope.end = false ;
 		$scope.loadMore = function() {
+				if(!$scope.latestbooks){
+					return;
+				}
+
 				skip = $scope.latestbooks ? $scope.latestbooks.length : 0 ;
+				console.log("skip :" + skip);
 				bookService.getLatestBooks(skip).then(function(bookssortedbydate){
 					if(bookssortedbydate.length == 0) {
 						$scope.end = true ;
@@ -184,15 +194,32 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 .controller('WishlistCtrl', function($scope,$http ,API_URL, bookService ) {
 	bookService.initDB(API_URL);
 
-
+    $scope.end = true ;
 		$scope.$on('$ionicView.enter', function(e) {
 				bookService.getToRead().then(function(books){
 						 $scope.wishlist = books ;
-						 console.log(books) ;
+						   $scope.end = false ;
 					}).catch(function (err){
 							console.log(err);
 					});
 		});
+		$scope.loadMore = function() {
+			console.log("in there");
+				if(!$scope.wishlist){
+					console.log("wishlist undefined");
+					return ;
+				}
+				skip = $scope.wishlist ? $scope.wishlist.length : 0 ;
+				console.log("skip " + skip);
+				bookService.getToRead(skip).then(function(books){
+					if(books.length == 0) {
+						$scope.end = true ;
+					}
+					Array.prototype.push.apply($scope.wishlist,books);
+				}).finally(function(){
+						 $scope.$broadcast('scroll.infiniteScrollComplete');
+					});
+	  };
 
 
 		$scope.deleteBook = function(index){
@@ -211,15 +238,29 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 })
 .controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService ) {
 	bookService.initDB(API_URL);
-
+  $scope.end = true ;
 		$scope.$on('$ionicView.enter', function(e) {
 				bookService.getAlreadyRead().then(function(books){
 						 $scope.readlist = books ;
-						 console.log(books) ;
+						 $scope.end = false ;
 					}).catch(function (err){
 							console.log(err);
 					});
 		});
+		$scope.loadMore = function() {
+			console.log("in there");
+
+				skip = $scope.readlist ? $scope.readlist.length : 0 ;
+				console.log("skip " + skip);
+				bookService.getAlreadyRead(skip).then(function(books){
+					if(books.length == 0) {
+						$scope.end = true ;
+					}
+					Array.prototype.push.apply($scope.readlist,books);
+				}).finally(function(){
+						 $scope.$broadcast('scroll.infiniteScrollComplete');
+					});
+	  };
 
 
 		$scope.deleteBook = function(index){
@@ -231,6 +272,28 @@ angular.module('bhook.controllers', ['bhook.services','bhook.directives','ionic.
 
 
 		}
+
+
+
+
+})
+.controller('SettingsCtrl', function($scope,settingsService,$translate) {
+	   $scope.translations = translations ;
+		 console.log( translations);
+
+    settingsService.initDB(); // only local
+		$scope.$on('$ionicView.enter', function(e) {
+				//TODO get current language value from settingsService
+				settingsService.getLanguage().then(function(language){
+		 		 $translate.use(language) ;
+		 	 });
+		});
+
+ $scope.languageChange = function(){
+	 // remove actual text from the input .
+	 console.log("ici");
+
+	};
 
 
 

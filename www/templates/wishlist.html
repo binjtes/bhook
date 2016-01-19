@@ -10,5 +10,9 @@
       </ion-item>
 
   </ion-list>
+  <ion-infinite-scroll ng-if="!end"
+      on-infinite="loadMore()"
+      distance="25%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-view>

@@ -1,14 +1,16 @@
 <ion-view view-title="bhook - {{ 'already_read_list' | translate }}">
   <ion-content class="has-header" padding="true">
-    <h4><i>{{ 'already_read_list_explain' | translate }} </i></h4>
     <ion-list show-delete="false" can-swipe="true">
       <ion-item ng-repeat="book in readlist" class="alphabetlist" >
-
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h4>{{book.book}}  </h4>
            <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteBook($index)"></ion-option-button>
       </ion-item>
 
   </ion-list>
+  <ion-infinite-scroll ng-if="!end"
+      on-infinite="loadMore()"
+      distance="25%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-view>

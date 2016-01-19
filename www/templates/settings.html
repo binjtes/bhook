@@ -1,16 +1,11 @@
 <ion-view view-title="bhook - {{ 'settings' | translate }}">
   <ion-content class="has-header" padding="true">
 
-<ul class="list">
-  <li>
-      {{ 'english' | translate }}
-      <label class="toggle">
-     <input type="checkbox">
-     <div class="track">
-       <div class="handle"></div>
-     </div>
-  </label>{{ 'french' | translate }}
-  </li>
-</ul>
+        <ion-radio ng-repeat="lang in translations"
+                         ng-value="lang.value"
+                         ng-model="data.selectedLanguage">
+                {{ lang.value }}
+              </ion-radio>
+
   </ion-content>
 </ion-view>

@@ -1,5 +1,38 @@
 angular.module('bhook.services',[])
-.factory('bookService', ['$q', bookService  ]);
+.factory('settingsService',['$q', function($q){
+  var _dbsettings ;
+ return {
+   initDB: function(){
+     if(_dbsettings == undefined){
+       _dbsettings = new PouchDB('bhooksettings', {adapter: 'websql'});
+      }
+    },
+    setLanguage : function(language){
+      languageArr = {};
+      languageArr._id = 'applanguage';
+      languageArr.language = language ;
+      return $q.when(_dbsettings.put(languageArr )).then(function(addedlanguage) {
+             return addedlanguage ;
+        // body...
+      }).catch(function (err) {
+         console.log(err);
+       });
+    },
+    getLanguage : function(){
+      return $q.when(  _dbsettings.get('applanguage',{}) ).then(function(setlanguage) {
+            console.log(setlanguage);
+            return setlanguage['language'];
+        }).catch(function (err) {
+          // return default value ;
+           console.log(err);
+           return 'fr' ;
+        });
+
+    }
+  }
+ }])
+
+.factory('bookService', ['$q', bookService]);
 
 function bookService($q){
   var _db ;
@@ -58,9 +91,11 @@ function bookService($q){
 
 		  }
 		} ,
-    getAlreadyRead: function(){
+    getAlreadyRead: function(skip){
 			return $q.when(_db.query( mapAuthLastNameRead ,{
-
+        descending : true,
+        skip: skip ,
+        limit : 4
 
       }))
         .then(function(books) {
@@ -69,8 +104,6 @@ function bookService($q){
               console.log('**entering query');
               var booksbyauthorname ;
 	    			  booksbyauthorname = books.rows.map(function(row) {
-              console.log("row:");
-              console.log(row);
 	    				return row['key'];
 	          });
 
@@ -81,17 +114,15 @@ function bookService($q){
 
 
 		},
-    getToRead: function(){
+    getToRead: function(skip){
 			return $q.when(_db.query( mapAuthLastNameToRead ,{
+        descending : true,
+        skip: skip ,
+        limit : 4
       }))
         .then(function(books) {
-          console.log('entering query');
-	    			console.log(books);
-              console.log('**entering query');
               var booksbyauthorname ;
 	    			  booksbyauthorname = books.rows.map(function(row) {
-              console.log("row:");
-              console.log(row);
 	    				return row['key'];
 	          });
 
@@ -99,8 +130,6 @@ function bookService($q){
 	    	}).catch(function (err) {
 	    		console.log(err);
 	    	});
-
-
 		},
 		getLatestBooks: function(skip){
       			return $q.when(_db.query( map ,{
@@ -111,8 +140,6 @@ function bookService($q){
               .then(function(books) {
                   var booksbydate ;
       	    			booksbydate = books.rows.map(function(row) {
-                    console.log("row:");
-                    console.log(row);
       	    				return row['key'];
       	          });
       	          return booksbydate;
