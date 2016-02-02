@@ -32,9 +32,9 @@ angular.module('bhook.services',[])
   }
  }])
 
-.factory('bookService', ['$q', bookService]);
+.factory('bookService', ['$q','$window', bookService]);
 
-function bookService($q){
+function bookService($q , $window){
   var _db ;
 
   var map = function(doc){
@@ -92,7 +92,19 @@ function bookService($q){
 		  }
 		} ,
     saveDatabase: function(){
-      var ws = fs.createWriteStream('output.txt');
+      var MemoryStream = $window.memorystream;
+      var stream = new MemoryStream();
+
+      var dumpedString = '';
+     stream.on('data', function(chunk) {
+          dumpedString += chunk.toString();
+        });
+      _db.dump(stream).then(function () {
+        console.log('Yay, I have a dumpedString: ' + dumpedString);
+      }).catch(function (err) {
+        console.log('oh no an error', err);
+      });
+
 /*
       return $q.when(_db.dump(ws).then(function (res) {
         // res should be {ok: true}
