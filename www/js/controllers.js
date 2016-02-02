@@ -278,21 +278,23 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 })
 .controller('SettingsCtrl', function($scope,settingsService,$translate) {
-	   $scope.translations = translations ;
-		 console.log( translations);
-
+	  $scope.translations = translations ;
     settingsService.initDB(); // only local
+		//default value is set to french and willbe overriden  by db value
+		$scope.data = {
+			selectedLanguage: 'fr'
+		};
 		$scope.$on('$ionicView.enter', function(e) {
-				//TODO get current language value from settingsService
+				// get current language value from settingsService
 				settingsService.getLanguage().then(function(language){
 		 		 $translate.use(language) ;
+				 $scope.data.selectedLanguage = language;
 		 	 });
 		});
 
- $scope.languageChange = function(){
+ $scope.languageChange = function(language){
 	 // remove actual text from the input .
-	 console.log("ici");
-
+	 $translate.use(language) ;
 	};
 
 

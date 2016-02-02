@@ -1,5 +1,11 @@
 var translations = {
 	"en": {
+		"settings_language" : "change the language used",
+		"settings_db":"database actions",
+		"settings_dump_db":"save database",
+		"settings_restore_db":"restore database",
+		"en": "english",
+		"fr": "french",
 		"menu": "menu",
 		"add_a_book": "Add a book",
 		"latest_books": "Latest books ",
@@ -9,13 +15,16 @@ var translations = {
 		"to_read" : "To read",
     "already_read_list" : "Already read list",
     "settings" : "Settings",
-    "login": "Login",
-    "to_real_list_explain" : "all those books i never have the time to read",
-
-
+    "login": "Login"
 
 	},
 	"fr": {
+		"settings_language" : "changer la langue utilisée",
+		"settings_db":"actions de sauvegardes",
+		"settings_dump_db":"sauvegarde de la base de données",
+		"settings_restore_db":"restauration de la base de donnée",
+		"en": "anglais",
+		"fr": "français",
 		"menu": "menu",
 		"close": "fermer",
 		"add_a_book": "Ajouter un livre",
