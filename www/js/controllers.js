@@ -277,7 +277,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 
 })
-.controller('SettingsCtrl', function($scope,settingsService,$translate) {
+.controller('SettingsCtrl', function($scope,settingsService,bookService ,$translate) {
 	  $scope.translations = translations ;
     settingsService.initDB(); // only local
 		//default value is set to french and willbe overriden  by db value
@@ -297,7 +297,17 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 $translate.use(language) ;
 	};
 
+	$scope.savedatabase = function(){
 
+	bookService.saveDatabase().then(function(){
+	 	console.log("allright..");
+	});
+
+	 };
+
+	 $scope.restoredatabase = function(){
+
+ 	 };
 
 
 })

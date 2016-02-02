@@ -91,6 +91,18 @@ function bookService($q){
 
 		  }
 		} ,
+    saveDatabase: function(){
+      var ws = fs.createWriteStream('output.txt');
+/*
+      return $q.when(_db.dump(ws).then(function (res) {
+        // res should be {ok: true}
+      })).then(function(res) {
+          console.log('dump done');
+	    	}).catch(function (err) {
+	    		console.log(err);
+	    	});
+        */
+    },
     getAlreadyRead: function(skip){
 			return $q.when(_db.query( mapAuthLastNameRead ,{
         descending : true,
