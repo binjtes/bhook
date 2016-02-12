@@ -2,14 +2,13 @@ angular.module('bhook.directives',[]);
 angular.module('bhook.directives').directive('distributeInput', function (){
 return{
     restrict :'A',
-    templateUrl: function(element, attr) { return attr.templateUrl ? attr.templateUrl : 'templates/inputstep1.html' },
     scope: false,
     link: function(scope, element, attrs){
  
       scope.toggleAdditionalForm = function toggleAdditionalForm(){
         console.log(scope.submitData.toread);
 
-      };
+      }; 
       scope.movetext = function movetext(authoronly){
         if(authoronly){
      				// additional filter

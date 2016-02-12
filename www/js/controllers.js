@@ -1,33 +1,33 @@
 angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,settingsService,$ionicModal,$translate ) {
-	 bookService.initDB(API_URL);
+	bookService.initDB(API_URL);
 
 	 // resolve settings
-   settingsService.initDB(); // only local
-	 settingsService.getLanguage().then(function(language){
-		 $translate.use(language) ;
+    settingsService.initDB(); // only local
+        settingsService.getLanguage().then(function(language){
+            $translate.use(language) ;
 	 });
 
-	 	 // set the rate and max variable for ionic rating
-   $scope.rate = 3;
-   $scope.max = 5;
-	 //data to populate a book object
-	 $scope.submitData= {};
-	 // other data values binded into controller
-	 $scope.data= {};
+    // set the rate and max variable for ionic rating
+    $scope.rate = 3;
+    $scope.max = 5;
+    //data to populate a book object
+    $scope.submitData= {};
+    // other data values binded into controller
+    $scope.data= {};
 
-	 $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-  // $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-	 // the first skip for the latest book list is the first 8 already called by default
+    $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
+    // $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
+    // the first skip for the latest book list is the first 8 already called by default
 
-	 // Create the auth/book distinction modal that is used before the insertion of data
-	 $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html',function($ionicModal) {
- 			$scope.modalauthbook = $ionicModal;
-	 }, {
-		 scope: $scope
-	 }).then(function(modalauthbook) {
-		 $scope.modalauthbook = modalauthbook;
-	 });
+    // Create the auth/book distinction modal that is used before the insertion of data
+    $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html', function ($ionicModal) {
+        $scope.modalauthbook = $ionicModal;
+    }, {
+            scope: $scope
+        }).then(function (modalauthbook) {
+            $scope.modalauthbook = modalauthbook;
+        });
 
 	 // Create the auth first and last distinction modal that is used before the insertion of data
 	 $ionicModal.fromTemplateUrl('templates/addauthmodal.html',function($ionicModal) {
@@ -110,7 +110,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
 	 }
    $scope.latestbooks = [];
-	// TODO implement : http://ionicframework.com/docs/api/directive/ionRefresher/ ? http://blog.ionic.io/pull-to-refresh-directive/
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
 			console.log("$ionicView.enter") ;
@@ -209,7 +208,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 					console.log("wishlist undefined");
 					return ;
 				}
-				skip = $scope.wishlist ? $scope.wishlist.length : 0 ;
+				var skip = $scope.wishlist ? $scope.wishlist.length : 0 ;
 				console.log("skip " + skip);
 				bookService.getToRead(skip).then(function(books){
 					if(books.length == 0) {
@@ -250,7 +249,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 		$scope.loadMore = function() {
 			console.log("in there");
 
-				skip = $scope.readlist ? $scope.readlist.length : 0 ;
+				var skip = $scope.readlist ? $scope.readlist.length : 0 ;
 				console.log("skip " + skip);
 				bookService.getAlreadyRead(skip).then(function(books){
 					if(books.length == 0) {
@@ -277,45 +276,104 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 
 })
-.controller('SettingsCtrl', function($scope,settingsService,bookService ,$translate, $window) {
-		// FIXME  : should use a singleton
-		bookService.initDB();
-	  $scope.translations = translations ;
-    settingsService.initDB(); // only local
-		//default value is set to french and willbe overriden  by db value
-		$scope.data = {
-			selectedLanguage: 'fr'
-		};
-		$scope.$on('$ionicView.enter', function(e) {
-				// get current language value from settingsService
-				settingsService.getLanguage().then(function(language){
-		 		 $translate.use(language) ;
-				 $scope.data.selectedLanguage = language;
-		 	 });
-		});
-
- $scope.languageChange = function(language){
-	 // remove actual text from the input .
-	 $translate.use(language) ;
-	};
-
-	$scope.savedatabase = function(){
-
- 		bookService.saveDatabase() ;
-
-/*	bookService.saveDatabase().then(function(){
-
- console.log(stream );
-	});*/
-
-	 };
-
-	 $scope.restoredatabase = function(){
-
- 	 };
+.controller('SettingsCtrl', function ($scope, settingsService, bookService, $translate, $window, $cordovaFile, $ionicPlatform ) {
+        // FIXME  : should use a singleton
+        bookService.initDB();
+        $scope.translations = translations;
+        settingsService.initDB(); // only local
+        //default value is set to french and willbe overriden  by db value
+        $scope.data = {
+            selectedLanguage: 'fr',
+            settingsdir : 'test'
+        };
+        $scope.$on('$ionicView.enter', function (e) {
+            // get current language value from settingsService
+            settingsService.getLanguage().then(function (language) {
+                $translate.use(language);
+                $scope.data.selectedLanguage = language;
+            });
+        });
 
 
-})
+//, $filefactory en arg de controller : cant inject 
+    /*var fs = new $fileFactory();
+
+    $ionicPlatform.ready(function() {
+        fs.getEntriesAtRoot().then(function(result) {
+            $scope.files = result;
+        }, function(error) {
+            console.error(error);
+        });
+
+        $scope.getContents = function(path) {
+            fs.getEntries(path).then(function(result) {
+                $scope.files = result;
+                $scope.files.unshift({name: "[parent]"});
+                fs.getParentDirectory(path).then(function(result) {
+                    result.name = "[parent]";
+                    $scope.files[0] = result;
+                });
+            });
+        }
+    });
+*/
+
+
+        $scope.languageChange = function (language) {
+            // remove actual text from the input .
+            $translate.use(language);
+        };
+
+        $scope.savedatabase = function () {  
+            // only if device ready ,this  won't work on browser emulation 
+            
+            
+            $ionicPlatform.ready(function() {
+                var date = new Date();
+                var bhookdbbackup = "bhook_db_backup_" + date.getFullYear().toString() + "_" + (date.getMonth() + 1).toString() + "_" + date.getDate().toString() + ".json";
+                console.log(bhookdbbackup); 
+                bookService.saveDatabase().then(function (jsondata) {
+                     
+                var fileDir ;   
+                          
+                if (ionic.Platform.isAndroid()) {
+                    // resolve the dir depending on type of device
+                    console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
+                     fileDir = cordova.file.externalRootDirectory  ;
+                     console.log('ANDROID FILEDIR: ' + fileDir);
+                    
+                }
+                if (ionic.Platform.isIOS()) {
+                    console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+                    fileDir = cordova.file.documentsDirectory; 
+                    console.log('IOS FILEDIR: ' + fileDir);
+                }
+
+                if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
+                                
+                    // Write  into file 
+                    $cordovaFile.writeFile( fileDir , bhookdbbackup , jsondata , true).then(function (success) {
+                            // success 
+                            //show a message where the file is located 
+                            console.log('written: ' + fileDir + bhookdbbackup );
+                             $scope.data.settingsdir = "OK ! writen !! " +  fileDir + bhookdbbackup ;
+                             return bhookdbbackup ;
+                                                         
+                        }, function (error) {
+                             $scope.data.settingsdir += "can' t write to " +  fileDir + bhookdbbackup   ; 
+                            // error 
+                             console.log('ERROR: writing ' + JSON.stringify(error));
+                        });
+                }
+                });
+            });
+        };
+        $scope.restoredatabase = function () {
+
+        };
+
+
+    })
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $http ,API_URL, bookService ) {
 
 	// With the new view caching in Ionic, Controllers are only called
@@ -335,16 +393,5 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	console.log($scope.formBookAuthorText);
 	//$scope.submitData.author = $scope.formBookAuthorText ;
 
-})
-.controller('PlaylistsCtrl', function($scope) {
-	$scope.playlists = [
-		{ title: 'Reggae', id: 1 },
-		{ title: 'Chill', id: 2 },
-		{ title: 'Dubstep', id: 3 },
-		{ title: 'Indie', id: 4 },
-		{ title: 'Rap', id: 5 },
-		{ title: 'Cowbell', id: 6 }
-	];
-})
-.controller('PlaylistCtrl', function($scope, $stateParams) {
 });
+

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'pascalprecht.translate','bhook.config','bhook.controllers','bhook.services'])
+angular.module('starter', ['ionic', 'pascalprecht.translate', 'ngCordova','bhook.config','bhook.controllers','bhook.services'])
 .run(function($ionicPlatform) {
 
   $ionicPlatform.ready(function() {
@@ -73,15 +73,7 @@ $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
             controller: 'SettingsCtrl'
           }
         }
-      })
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
-      }
-    }
+      
   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/dashboard');

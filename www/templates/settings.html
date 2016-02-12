@@ -1,7 +1,12 @@
 <ion-view view-title="bhook - {{ 'settings' | translate }}">
   <ion-content class="has-header" padding="true">
+         
     <div class="item item-divider">
       {{ 'settings_language' | translate  }}
+     
+     
+     
+     
    </div>
 <div class="item">
         <ion-radio ng-repeat="(key,lang) in translations"
@@ -17,8 +22,22 @@
             </div>
             <div class="item">
                 <button class="button button-stable button-block " ng-click="savedatabase()">    {{ 'settings_dump_db' | translate  }}</button>
-
+                {{data.settingsdir}}
                <button class="button button-stable button-block " ng-click="restoredatabase()">{{ 'settings_restore_db' | translate  }}</button>
 </div>
+   
+   <!--
+    <div class="list">
+        <div ng-repeat="file in files">
+            <a class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
+                <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+                <i ng-show="file.isFile" class="icon ion-document"></i>
+                {{file.name}}
+            </a>
+        </div>
+    </div>
+-->
+
+
   </ion-content>
 </ion-view>

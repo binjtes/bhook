@@ -6,8 +6,24 @@
     </div> 
   </ion-header-bar>
   <ion-content>
-  <form distribute-input template-url="/templates/inputstep2.html" />
+  <form distribute-input >
+  <div class="list">
+  <label class="item item-input">
+    <span class="input-label">{{ 'first name' | translate }}</span>
+    <input type="text" id="author_firstname"  ng-model="submitData.author_firstname">
+  </label>
+  <label class="item">
+    <button id="move"  ng-click="movetext(true)" ng-class="arrowDirectionClass"  class="button button-block button-calm icon " >{{ 'move' | translate }}</button>
+  </label>
+  <label class="item item-input">
+    <span class="input-label">{{ 'last name' | translate }}</span>
+    <input type="text" id="book" ng-model="submitData.author_lastname">
+  </label>
+  <label class="item">
+    <button class="button button-block button-positive" type="submit" ng-click="submitAuthBook()" >Add</button>
+  </label>
+</div>
 
-    </form>
+   </form>
   </ion-content>
 </ion-modal-view>
