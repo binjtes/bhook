@@ -160,7 +160,7 @@ function bookService($q, $window) {
             }).catch(function (err) {
                 console.log('oh no an error', err);
             });
-
+ 
 
             /*
                   return $q.when(_db.dump(ws).then(function (res) {
@@ -172,6 +172,16 @@ function bookService($q, $window) {
                         });
                     */
         },
+        restoreDatabase: function(dumpedstring){
+            return $q.when(_db.load(dumpedstring)).then(function () {
+                 // done loading!
+                 return true ;
+            }).catch(function (err) {
+                console.log('oh no an error', err);
+                return false ;
+            }); 
+            
+        }  ,  
         getAlreadyRead: function (skip) {
             return $q.when(_db.query(mapAuthLastNameRead, {
                 descending: true,
@@ -264,9 +274,12 @@ function bookService($q, $window) {
             if (_db) {
                 console.log("destroy");
                 _db.destroy().then(function () {
+                    // on recree la base vide 
+                    this.initDB();
                 }).catch(function (err) {
                     // error occurred
                     console.log("err" + err);
+                    
                 })
             }
 

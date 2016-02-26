@@ -145,50 +145,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 					});
 	  };
 
-/************* debug functions *****************/
-			$scope.testaddBook = function(){
-
-				console.log($scope.bookService);
-				var book2 = {
-					_id : "chinua-achebe-le-monde-s-effondre-"+ new Date().toString() ,
-					author_firstname:	"Chinua",
-					author_lastname: "Achebe",
-					book: "Le monde s'effondre" ,
-					added:	new Date() ,
-					to_read : true } ;
-
-					 return bookService.addBook(book2).then(function(book){
-								$scope.latestbooks.push(book2) ;
-								return true;
-
-		 				}).catch(function (err) {
-							 console.log(err);
-						 });
-			};
-			$scope.resetdb = function(){
-				bookService.resetDb();
-				// populate
-				var book1 = {
-					_id : "andersen-hans-christian-contes",
-					author_firstname: "Hans Christian",
-					author_lastname: "Andersen",
-					book: "Contes" ,
-					added:	"2015-12-13T17:33:02.276Z",
-					toread : true } ;
-					bookService.addBook(book1) ;
-					var book2 = {
-						_id : "chinua-achebe-le-monde-s-effondre",
-						author_firstname: "Chinua",
-						author_lastname: "Achebe",
-						book: "Le monde s'effondre" ,
-						added:	new Date() ,
-						toread : true } ;
-
-					 bookService.addBook(book2) ;
-		}
-
-
-
 })
 .controller('WishlistCtrl', function($scope,$http ,API_URL, bookService ) {
 	bookService.initDB(API_URL);
@@ -276,7 +232,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 
 })
-.controller('SettingsCtrl', function ($scope, settingsService, bookService, $translate, $window, $cordovaFile, $ionicPlatform ) {
+.controller('SettingsCtrl', function ($scope, settingsService, bookService, $translate, $window, $cordovaFile, $ionicPlatform , $ionicPopup) {
         // FIXME  : should use a singleton
         bookService.initDB();
         $scope.translations = translations;
@@ -295,28 +251,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         });
 
 
-//, $filefactory en arg de controller : cant inject 
-    /*var fs = new $fileFactory();
-
-    $ionicPlatform.ready(function() {
-        fs.getEntriesAtRoot().then(function(result) {
-            $scope.files = result;
-        }, function(error) {
-            console.error(error);
-        });
-
-        $scope.getContents = function(path) {
-            fs.getEntries(path).then(function(result) {
-                $scope.files = result;
-                $scope.files.unshift({name: "[parent]"});
-                fs.getParentDirectory(path).then(function(result) {
-                    result.name = "[parent]";
-                    $scope.files[0] = result;
-                });
-            });
-        }
-    });
-*/
 
 
         $scope.languageChange = function (language) {
@@ -326,16 +260,16 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
         $scope.savedatabase = function () {  
             // only if device ready ,this  won't work on browser emulation 
-            
-            
             $ionicPlatform.ready(function() {
-                var date = new Date();
-                var bhookdbbackup = "bhook_db_backup_" + date.getFullYear().toString() + "_" + (date.getMonth() + 1).toString() + "_" + date.getDate().toString() + ".json";
-                console.log(bhookdbbackup); 
+
+
                 bookService.saveDatabase().then(function (jsondata) {
                      
                 var fileDir ;   
-                          
+                        
+                var date = new Date();
+                var bhookdbbackup = "bhook_db_backup_" + date.getFullYear().toString() + "_" + (date.getMonth() + 1).toString() + "_" + date.getDate().toString() + ".json";   
+                  
                 if (ionic.Platform.isAndroid()) {
                     // resolve the dir depending on type of device
                     console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
@@ -348,6 +282,8 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                     fileDir = cordova.file.documentsDirectory; 
                     console.log('IOS FILEDIR: ' + fileDir);
                 }
+         
+
 
                 if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
                                 
@@ -355,21 +291,116 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                     $cordovaFile.writeFile( fileDir , bhookdbbackup , jsondata , true).then(function (success) {
                             // success 
                             //show a message where the file is located 
-                            console.log('written: ' + fileDir + bhookdbbackup );
-                             $scope.data.settingsdir = "OK ! writen !! " +  fileDir + bhookdbbackup ;
+                                // Custom popup
+                                $ionicPopup.show({
+                                    template: $translate.instant("save_db_info") + " " +fileDir + bhookdbbackup,
+                                    title: $translate.instant("save_db"),
+                                    scope: $scope,
+                                    buttons: [
+                                        { text: $translate.instant("close") }
+                                    ]
+                                });
                              return bhookdbbackup ;
                                                          
                         }, function (error) {
-                             $scope.data.settingsdir += "can' t write to " +  fileDir + bhookdbbackup   ; 
+                                 $ionicPopup.show({
+                                    template: $translate.instant("save_db_error") + " " +fileDir,
+                                    title: $translate.instant("save_db"),
+                                    scope: $scope,
+                                    buttons: [
+                                        { text: $translate.instant("close") }
+                                    ]
+                                });
                             // error 
                              console.log('ERROR: writing ' + JSON.stringify(error));
                         });
                 }
                 });
             });
+            
+
+            
         };
         $scope.restoredatabase = function () {
+          $ionicPlatform.ready(function() { 
+                var fileDir ;   
+          
+                                        
+                var date = new Date();
+                var bhookdbbackup = "bhook.json";   
+                  
+                if (ionic.Platform.isAndroid()) {
+                    // resolve the dir depending on type of device
+                    console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
+                     fileDir = cordova.file.externalRootDirectory  ;
+                     console.log('ANDROID FILEDIR: ' + fileDir);
+                    
+                }
+                if (ionic.Platform.isIOS()) {
+                    console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+                    fileDir = cordova.file.documentsDirectory; 
+                    console.log('IOS FILEDIR: ' + fileDir);
+                }
+         
+                //now read the file 
+                console.log('expected file location : ' +fileDir+bhookdbbackup ) ; 
+                // check file exists, if not return the message in a popup 
+                $cordovaFile.checkFile(fileDir,bhookdbbackup ).then(function(){
+                 $cordovaFile.readAsText(fileDir,bhookdbbackup ).then(function(dumpedbased) {
+                    console.log('read as text result : ' + dumpedbased) ;
+                    bookService.restoreDatabase(dumpedbased).then(function (result) {
+                        console.log('result returned ' + result ) ;
+                        if(result == true){
+                            console.log('apparently restored') ;
+                            $ionicPopup.show({
+                                    template: $translate.instant("restore_db_info"),
+                                    title: $translate.instant("restore_db"),
+                                    scope: $scope,
+                                    buttons: [
+                                        { text: $translate.instant("close") }
+                                    ]
+                                });
+                        }else{
+                             $ionicPopup.show({
+                                    template: $translate.instant("restore_db_error") + " " + fileDir+bhookdbbackup,
+                                    title: $translate.instant("restore_db"),
+                                    scope: $scope,
+                                    buttons: [
+                                        { text: $translate.instant("close") }
+                                    ]
+                                });
+                            console.log('problem') ;
+                            
+                        }
+                        
+                        
+                    });
+                    
+                });                   
+                    
+                },function(error){
+                                          $ionicPopup.show({
+                                    template: $translate.instant("restore_db_error" +fileDir+bhookdbbackup ),
+                                    title: $translate.instant("restore_db"),
+                                    scope: $scope,
+                                    buttons: [
+                                        { text: $translate.instant("close") }
+                                    ]
+                                });
+                            console.log('problem') ;
+                    
+                } ) ;
+                   
 
+              
+
+              
+              
+              
+          });
+              
+              
+          
         };
 
 
