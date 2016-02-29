@@ -78,8 +78,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 		delete	$scope.submitData.author ;
 	 		// add timestamp
 	 		$scope.submitData['added'] = new Date();
+             
+             // transform all capital letters
+             $scope.submitData['author_lastname'] =  $scope.submitData['author_lastname'].toLowerCase() ;
+             $scope.submitData['author_firstname'] =  $scope.submitData['author_firstname'].toLowerCase() ;
+             $scope.submitData['book'] =  $scope.submitData['book'].toLowerCase() ;
 			// build the id using alphabetical order
-			$scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'].toLowerCase();
+			$scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'];
 
       // field toread :change YES/NO for true false in database
 			if($scope.submitData.toread == 'YES'){
@@ -144,6 +149,47 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 						 $scope.$broadcast('scroll.infiniteScrollComplete');
 					});
 	  };
+            /************* debug functions *****************/
+			$scope.testaddBook = function(){
+
+				console.log($scope.bookService);
+				var book2 = {
+					_id : "chinua-achebe-le-monde-s-effondre-"+ new Date().toString() ,
+					author_firstname:	"Chinua",
+					author_lastname: "Achebe",
+					book: "Le monde s'effondre" ,
+					added:	new Date() ,
+					to_read : true } ;
+
+					 return bookService.addBook(book2).then(function(book){
+								$scope.latestbooks.push(book2) ;
+								return true;
+
+		 				}).catch(function (err) {
+							 console.log(err);
+						 });
+			};
+			$scope.resetdb = function(){
+				bookService.resetDb();
+				// populate
+				var book1 = {
+					_id : "andersen-hans-christian-contes",
+					author_firstname: "Hans Christian",
+					author_lastname: "Andersen",
+					book: "Contes" ,
+					added:	"2015-12-13T17:33:02.276Z",
+					toread : true } ;
+					bookService.addBook(book1) ;
+					var book2 = {
+						_id : "chinua-achebe-le-monde-s-effondre",
+						author_firstname: "Chinua",
+						author_lastname: "Achebe",
+						book: "Le monde s'effondre" ,
+						added:	new Date() ,
+						toread : true } ;
+
+					 bookService.addBook(book2) ;
+		}
 
 })
 .controller('WishlistCtrl', function($scope,$http ,API_URL, bookService ) {

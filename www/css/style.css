@@ -5,7 +5,7 @@
 }
 
 .alphabetlist:first-letter {
-   text-transform: capitalize;
+   /*text-transform: capitalize;*/
   color: red;
   font-size: 130%;
 }

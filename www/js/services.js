@@ -31,61 +31,6 @@ angular.module('bhook.services', [])
             }
         }
     }])
-.factory("$fileFactory", function($q) {
-// file browsing factory from https://www.airpair.com/ionic-framework/posts/ionic-file-browser-app
-    var File = function() { };
-
-    File.prototype = {
-
-        getParentDirectory: function(path) {
-            var deferred = $q.defer();
-            window.resolveLocalFileSystemURI(path, function(fileSystem) {
-                fileSystem.getParent(function(result) {
-                    deferred.resolve(result);
-                }, function(error) {
-                    deferred.reject(error);
-                });
-            }, function(error) {
-                deferred.reject(error);
-            });
-            return deferred.promise;
-        },
-
-        getEntriesAtRoot: function() {
-            var deferred = $q.defer();
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-                var directoryReader = fileSystem.root.createReader();
-                directoryReader.readEntries(function(entries) {
-                    deferred.resolve(entries);
-                }, function(error) {
-                    deferred.reject(error);
-                });
-            }, function(error) {
-                deferred.reject(error);
-            });
-            return deferred.promise;
-        },
-
-        getEntries: function(path) {
-            var deferred = $q.defer();
-            window.resolveLocalFileSystemURI(path, function(fileSystem) {
-                var directoryReader = fileSystem.createReader();
-                directoryReader.readEntries(function(entries) {
-                    deferred.resolve(entries);
-                }, function(error) {
-                    deferred.reject(error);
-                });
-            }, function(error) {
-                deferred.reject(error);
-            });
-            return deferred.promise;
-        }
-
-    };
-
-    return File;
-
-})
     .factory('bookService', ['$q', '$window', bookService]);
 
 function bookService($q, $window) {
@@ -96,7 +41,7 @@ function bookService($q, $window) {
     }
     var mapAuthLastNameToRead = function (doc) {
         if (doc.toread != false) {
-            emit({ author_lastname: doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
+            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
         }
     }
     var mapAuthLastNameRead = function (doc) {
@@ -143,7 +88,30 @@ function bookService($q, $window) {
                     // some error (maybe a 409, because it already exists?)
                 });
 
-            }
+            } 
+        },       
+         getToRead: function (skip) {
+            return $q.when(_db.query(mapAuthLastNameToRead , {
+                descending: false,
+                skip: skip,
+                limit: 4
+            }))
+                .then(function (books) {
+                    var booksbyauthorname;
+                    booksbyauthorname = books.rows.map(function (row) {
+                        console.log("key :" );
+                        console.log(row['key']);
+                        return row['key'];
+                    });
+                      console.log(books);
+                    return booksbyauthorname;
+                   
+                }).then(function(booksbyauthorname){
+                     console.log(booksbyauthorname);
+                     return booksbyauthorname;
+                }).catch(function (err) {
+                    console.log(err);
+                });
         },
         saveDatabase: function () {
 
@@ -179,7 +147,7 @@ function bookService($q, $window) {
             }).catch(function (err) {
                 console.log('oh no an error', err);
                 return false ;
-            }); 
+            });  
             
         }  ,  
         getAlreadyRead: function (skip) {
@@ -204,23 +172,6 @@ function bookService($q, $window) {
                 });
 
 
-        },
-        getToRead: function (skip) {
-            return $q.when(_db.query(mapAuthLastNameToRead, {
-                descending: true,
-                skip: skip,
-                limit: 4
-            }))
-                .then(function (books) {
-                    var booksbyauthorname;
-                    booksbyauthorname = books.rows.map(function (row) {
-                        return row['key'];
-                    });
-
-                    return booksbyauthorname;
-                }).catch(function (err) {
-                    console.log(err);
-                });
         },
         getLatestBooks: function (skip) {
             return $q.when(_db.query(map, {
@@ -275,7 +226,7 @@ function bookService($q, $window) {
                 console.log("destroy");
                 _db.destroy().then(function () {
                     // on recree la base vide 
-                    this.initDB();
+                    _db.initDB();
                 }).catch(function (err) {
                     // error occurred
                     console.log("err" + err);
