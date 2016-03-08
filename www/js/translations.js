@@ -22,7 +22,8 @@ var translations = {
         "save_db_error" : "The database could not be saved , it seems you have not write access at  : ",
         "restore_db": "restore database",
         "restore_db_info" : "the database has been restored ",
-        "restore_db_error" : "Rename the previously backed up file into 'bhook.json'  and place the file here :"
+        "restore_db_error" : "Rename the previously backed up file into 'bhook.json'  and place the file here :",
+        "about" : "<a href=\"kk\">test </>:ssqssssss"
 
     },
     "fr": {
@@ -61,7 +62,7 @@ var translations = {
         "save_db_error" : "La base de donnée n'a pu être sauvegardée, il semble que vous n'ayez pas les droits sur ce répertoire : ",
         "restore_db": "restauration",
         "restore_db_info" : "La base de donnée a été restaurée",
-        "restore_db_error" : "Renommez le fichier de la sauvegarde en restore.bhook et placez le fichier à cet endroit :"
-
+        "restore_db_error" : "Renommez le fichier de la sauvegarde en restore.bhook et placez le fichier à cet endroit :",
+        "about" : "A propos"
     }
 }

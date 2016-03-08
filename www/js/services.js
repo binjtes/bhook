@@ -99,8 +99,6 @@ function bookService($q, $window) {
                 .then(function (books) {
                     var booksbyauthorname;
                     booksbyauthorname = books.rows.map(function (row) {
-                        console.log("key :" );
-                        console.log(row['key']);
                         return row['key'];
                     });
                       console.log(books);
