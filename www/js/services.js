@@ -11,12 +11,17 @@ angular.module('bhook.services', [])
                 languageArr = {};
                 languageArr._id = 'applanguage';
                 languageArr.language = language;
-                return $q.when(_dbsettings.put(languageArr)).then(function (addedlanguage) {
-                    return addedlanguage;
-                    // body...
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                return $q.when(_dbsettings.get(languageArr._id, {conflicts: true})).then(function (updatelanguage) {
+                        return $q.when(_dbsettings.put(languageArr,updatelanguage._rev)).then(function (addedlanguage) {
+                            return addedlanguage;
+                            }).catch(function (err) {
+                                console.log(err);
+                            });    
+                        // body...
+                    }).catch(function (err) {
+                        console.log(err);
+                    });                
+          
             },
             getLanguage: function () {
                 return $q.when(_dbsettings.get('applanguage', {})).then(function (setlanguage) {
@@ -46,18 +51,15 @@ function bookService($q, $window) {
     }
     var mapAuthLastNameRead = function (doc) {
         if (doc.toread == false) {
-            emit({ author_lastname: doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
-            // should i use this simplification and how ?emit([doc.author_lastname ,doc.author_firstname, doc.book] ,doc);
+            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
         }
     }
-
-
     return {
         initDB: function (API_URL) {
             if (_db == undefined) {
                 console.log("instantiate DB locally and eventually " + API_URL);
                 _db = new PouchDB('bhook', { adapter: 'websql' });
-                //PouchDB.debug.enable('*');
+                PouchDB.debug.enable('*');
                 PouchDB.debug.disable();
                 // PouchDB.replicate('bhook', API_URL + '/bhook', {live: true});
                 _db.info().then(function (info) {
@@ -65,7 +67,7 @@ function bookService($q, $window) {
                 })
                 // document that tells PouchDB/CouchDB
                 // to build up an index on doc.name
-                var ddoc = {
+               /* var ddoc = {
                     _id: '_design/my_index',
                     views: {
                         by_name: {
@@ -86,7 +88,7 @@ function bookService($q, $window) {
                 }).catch(function (err) {
                     console.log('index already created');
                     // some error (maybe a 409, because it already exists?)
-                });
+                });*/
 
             } 
         },       
@@ -111,12 +113,30 @@ function bookService($q, $window) {
                     console.log(err);
                 });
         },
+        getAlreadyRead: function (skip) {
+            return $q.when(_db.query(mapAuthLastNameRead, {
+                descending: false,
+                skip: skip,
+                limit: 4
+            }))
+                .then(function (books) {
+                    console.log('entering query');
+                    console.log(books);
+                     console.log(books.rows);
+                    console.log('**entering query');
+                    var booksbyauthorname;
+                    booksbyauthorname = books.rows.map(function (row) {
+                        return row['key'];
+                    });
+
+                    return booksbyauthorname;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+        },
         saveDatabase: function () {
-
-
             var MemoryStream = $window.memorystream;
             var stream = new MemoryStream();
-
             var dumpedString = '';
             stream.on('data', function (chunk) {
                 dumpedString += chunk.toString();
@@ -148,29 +168,6 @@ function bookService($q, $window) {
             });  
             
         }  ,  
-        getAlreadyRead: function (skip) {
-            return $q.when(_db.query(mapAuthLastNameRead, {
-                descending: true,
-                skip: skip,
-                limit: 4
-
-            }))
-                .then(function (books) {
-                    console.log('entering query');
-                    console.log(books);
-                    console.log('**entering query');
-                    var booksbyauthorname;
-                    booksbyauthorname = books.rows.map(function (row) {
-                        return row['key'];
-                    });
-
-                    return booksbyauthorname;
-                }).catch(function (err) {
-                    console.log(err);
-                });
-
-
-        },
         getLatestBooks: function (skip) {
             return $q.when(_db.query(map, {
                 descending: true,
@@ -215,21 +212,36 @@ function bookService($q, $window) {
                 // body...
             }).catch(function (err) {
                 console.log(err);
-            });
-
-
+            }); 
         },
+       updateBook: function (submitData) {    
+           return $q.when(_db.get(submitData._id, {conflicts: true})).then(function (updatedbook) {
+                return $q.when(_db.put(submitData,updatedbook._rev)).then(function (addedbook) {
+                    return updatedbook;
+                    }).catch(function (err) {
+                        console.log(err);
+                    });    
+                // body...
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        
+         
         resetDb: function () {
             if (_db) {
-                console.log("destroy");
-                _db.destroy().then(function () {
+                
+                return $q.when(_db.destroy()).then(function () {
                     // on recree la base vide 
-                    _db.initDB();
+                    console.log('destroyed');
+                    return true ;
                 }).catch(function (err) {
                     // error occurred
                     console.log("err" + err);
                     
                 })
+            }else{
+                return false ;
             }
 
         }

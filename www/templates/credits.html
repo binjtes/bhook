@@ -1,25 +1,111 @@
-<ion-view view-title="bhook - {{ 'settings' | translate }}">
-  <ion-content class="has-header" padding="true">
-         
-    <div class="item item-divider">
-      {{ 'about' | translate  }} 
-   </div>
-<div class="item">
-      
-</div>
-   
-   <!--
-    <div class="list">
-        <div ng-repeat="file in files">
-            <a class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
-                <i ng-show="file.isDirectory" class="icon ion-folder"></i>
-                <i ng-show="file.isFile" class="icon ion-document"></i>
-                {{file.name}}
-            </a>
+<ion-view view-title="bhook - {{ 'about' | translate }}">
+    <ion-content class="has-header" padding="true">
+
+        <div ng-show="creditsen">
+                      <div class="card">
+
+                <div class="item item-text-wrap">
+                    <p>
+                        Bhook is an hybrid app for android developed by  Benjamin Petit @codecorico
+                    </p>
+                    <p>
+                        <strong> Licensed under MIT </strong>
+                    </p>
+                    <p>
+                        <a href="https://github.com/bintjes/bhook">https://github.com/bintjes/bhook</a>
+                    </p>
+
+
+                </div>
+
+                <ion-list>
+                    <ion-item class="item item-text-wrap">
+
+                        <p>
+                            Bhook is developed by using Ionic framework  1
+                        </p>
+                        <strong>Ionic </strong> - Licensed under MIT
+                        <a href="https://github.com/driftyco/ionic">https://github.com/driftyco/ionic</a>
+                    </ion-item>
+                </ion-list>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <p>Bhook uses the following libraries  :</p>
+                    </div>
+
+                    <ion-list>
+                        <ion-item class="item item-text-wrap">
+                            <strong>PouchDB</strong> - Licensed under Apache
+                            <a href="https://github.com/pouchdb/pouchdb/"> https://github.com/pouchdb/pouchdb/ </a>
+                            <p> (nolan Lawson @nolanlawson.com)</p>
+                        </ion-item>
+
+                        <ion-item class="item item-text-wrap">
+                            <strong>Angular-translate </strong>- Licensed under MIT
+                            <a href="https://github.com/angular-translate/angular-translate">https://github.com/angular-translate/angular-translate</a>
+                            <p> (pascal precht @PascalPrecht)</p>
+                        </ion-item>
+                        <ion-item class="item item-text-wrap">
+                            <strong> Angular </strong>- Licensed under MIT
+                            <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js </a>
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>
         </div>
-    </div>
--->
+        <div ng-show="creditsfr">
+            <div class="card">
+
+                <div class="item item-text-wrap">
+                    <p>
+                        Bhook est une application hybride pour android développée par Benjamin Petit @codecorico
+                    </p>
+                    <p>
+                        <strong> Licensed under MIT </strong>
+                    </p>
+                    <p>
+                        <a href="https://github.com/bintjes/bhook">https://github.com/bintjes/bhook</a>
+                    </p>
 
 
-  </ion-content>
+                </div>
+
+                <ion-list>
+                    <ion-item class="item item-text-wrap">
+
+                        <p>
+                            Bhook est développé à travers le framework Ionic 1
+                        </p>
+                        <strong>Ionic </strong> - Licensed under MIT
+                        <a href="https://github.com/driftyco/ionic">https://github.com/driftyco/ionic</a>
+                    </ion-item>
+                </ion-list>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <p>Bhook utilise les librairies suivantes :</p>
+                    </div>
+
+                    <ion-list>
+                        <ion-item class="item item-text-wrap">
+                            <strong>PouchDB</strong> - Licensed under Apache
+                            <a href="https://github.com/pouchdb/pouchdb/"> https://github.com/pouchdb/pouchdb/ </a>
+                            <p> (nolan Lawson @nolanlawson.com)</p>
+                        </ion-item>
+
+                        <ion-item class="item item-text-wrap">
+                            <strong>Angular-translate </strong>- Licensed under MIT
+                            <a href="https://github.com/angular-translate/angular-translate">https://github.com/angular-translate/angular-translate</a>
+                            <p> (pascal precht @PascalPrecht)</p>
+                        </ion-item>
+                        <ion-item class="item item-text-wrap">
+                            <strong> Angular </strong>- Licensed under MIT
+                            <a href="https://github.com/angular/angular.js">https://github.com/angular/angular.js </a>
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>
+
+        </div>
+
+    </ion-content>
 </ion-view>

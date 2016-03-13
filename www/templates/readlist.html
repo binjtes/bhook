@@ -4,7 +4,8 @@
       <ion-item ng-repeat="book in readlist" class="alphabetlist" >
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h4>{{book.book}}  </h4>
-           <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteBook($index)"></ion-option-button>
+           <ion-option-button class="button-positive icon ion-edit" ng-click="updateItem($index)"></ion-option-button>
+           <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteItem($index)"></ion-option-button>
       </ion-item>
 
   </ion-list>

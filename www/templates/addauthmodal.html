@@ -2,7 +2,7 @@
   <ion-header-bar>
     <h1 class="title">{{ 'add author details' | translate }}</h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeAuthModal()">Close</button>
+      <button class="button button-clear" ng-click="closeAuthModal()">{{ 'close' | translate }}</button>
     </div> 
   </ion-header-bar>
   <ion-content>
@@ -20,7 +20,7 @@
     <input type="text" id="book" ng-model="submitData.author_lastname">
   </label>
   <label class="item">
-    <button class="button button-block button-positive" type="submit" ng-click="submitAuthBook()" >Add</button>
+    <button class="button button-block button-positive" type="submit" ng-click="submitAuthBook()" >{{ 'add' | translate }}</button>
   </label>
 </div>
 

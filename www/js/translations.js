@@ -7,8 +7,9 @@ var translations = {
         "en": "english",
         "fr": "french",
         "title": "title",
+        "added_at": "added at ",
         "menu": "menu",
-        "add_a_book": "Add ",
+        "add_a_book": "Add (book, tv show, film, cd )",
         "latest_books": "Latest additions ",
         "search": "Search",
         "main_page": "Main page",
@@ -23,7 +24,9 @@ var translations = {
         "restore_db": "restore database",
         "restore_db_info" : "the database has been restored ",
         "restore_db_error" : "Rename the previously backed up file into 'bhook.json'  and place the file here :",
-        "about" : "<a href=\"kk\">test </>:ssqssssss"
+        "about" : "About",
+        "update item" : "update item",
+        "update" : "update"
 
     },
     "fr": {
@@ -48,6 +51,7 @@ var translations = {
         "english": "Anglais",
         "french": "Français",
         "title": "titre",
+        "added_at": "ajouté le  ",
         "author": "auteur",
         "continue": "continuer",
         "move": "déplacer",
@@ -63,6 +67,8 @@ var translations = {
         "restore_db": "restauration",
         "restore_db_info" : "La base de donnée a été restaurée",
         "restore_db_error" : "Renommez le fichier de la sauvegarde en restore.bhook et placez le fichier à cet endroit :",
-        "about" : "A propos"
+        "about" : "a propos",
+        "update item" : "mode edition",
+        "update" : "mettre à jour"
     }
 }

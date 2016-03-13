@@ -2,8 +2,8 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,settingsService,$ionicModal,$translate ) {
 	bookService.initDB(API_URL);
 
-	 // resolve settings
-    settingsService.initDB(); // only local
+	 // resolve settings , only local
+    settingsService.initDB(); 
         settingsService.getLanguage().then(function(language){
             $translate.use(language) ;
 	 });
@@ -16,10 +16,16 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     // other data values binded into controller
     $scope.data= {};
 
-    $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-    // $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
-    // the first skip for the latest book list is the first 8 already called by default
+   	$scope.$on('$ionicView.enter', function(e) {
+        settingsService.initDB(); 
+        settingsService.getLanguage().then(function(language){
+            $translate.use(language) ;
+            $scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
+	    });
+       
+ 	});
 
+    // the first skip for the latest book list is the first 8 already called by default
     // Create the auth/book distinction modal that is used before the insertion of data
     $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html', function ($ionicModal) {
         $scope.modalauthbook = $ionicModal;
@@ -44,7 +50,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 		 // remove actual text from the input .
 		 $scope.data.formBookAuthorText = null;
 
-		};
+	};
 
 	 // opens a modal dialog window to sort values b/n  auth/book book/auth surn/firstname, to read true/false ..
 	 $scope.openModalAuthBook = function(){
@@ -100,7 +106,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 		console.log($scope.submitData) ;
 	 		//add the book
 	 		bookService.addBook($scope.submitData).then(function(book){
-				  $scope.latestbooks.unshift($scope.submitData) ;
+				    $scope.latestbooks.unshift($scope.submitData) ;
 					$scope.modalauth.hide();
 					$scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
 	 		});
@@ -152,7 +158,20 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             /************* debug functions *****************/
 			$scope.testaddBook = function(){
 
-				console.log($scope.bookService);
+				 var book1 = {
+                        _id : "andersen-hans-christian-contes",
+                        author_firstname: "Hans Christian",
+                        author_lastname: "Andersen",
+                        book: "Contes" ,
+                        added:	"2015-12-13T17:33:02.276Z",
+                        toread : true } ;
+                bookService.addBook(book1).then(function(book){
+                            $scope.latestbooks.push(book1) ;
+                            return true;  
+
+                }).catch(function (err) {
+                            console.log(err);
+                });
 				var book2 = {
 					_id : "chinua-achebe-le-monde-s-effondre-"+ new Date().toString() ,
 					author_firstname:	"Chinua",
@@ -161,119 +180,201 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 					added:	new Date() ,
 					to_read : true } ;
 
-					 return bookService.addBook(book2).then(function(book){
-								$scope.latestbooks.push(book2) ;
-								return true;
+                    return bookService.addBook(book2).then(function(book){
+                            $scope.latestbooks.push(book2) ;
+                            return true;
 
-		 				}).catch(function (err) {
-							 console.log(err);
-						 });
+                    }).catch(function (err) {
+                            console.log(err);
+                        });
 			};
 			$scope.resetdb = function(){
-				bookService.resetDb();
-				// populate
-				var book1 = {
-					_id : "andersen-hans-christian-contes",
-					author_firstname: "Hans Christian",
-					author_lastname: "Andersen",
-					book: "Contes" ,
-					added:	"2015-12-13T17:33:02.276Z",
-					toread : true } ;
-					bookService.addBook(book1) ;
-					var book2 = {
-						_id : "chinua-achebe-le-monde-s-effondre",
-						author_firstname: "Chinua",
-						author_lastname: "Achebe",
-						book: "Le monde s'effondre" ,
-						added:	new Date() ,
-						toread : true } ;
+                 console.log("reset called");
+				return bookService.resetDb().then(function(result){
+                    
+                    bookService.initDB();
+                    // populate dummy entries
+                    var book1 = {
+                        _id : "andersen-hans-christian-contes",
+                        author_firstname: "Hans Christian",
+                        author_lastname: "Andersen",
+                        book: "Contes" ,
+                        added:	"2015-12-13T17:33:02.276Z",
+                        toread : true } ;
+                        bookService.addBook(book1) ;
+                        var book2 = {
+                            _id : "chinua-achebe-le-monde-s-effondre",
+                            author_firstname: "Chinua",
+                            author_lastname: "Achebe",
+                            book: "Le monde s'effondre" ,
+                            added:	new Date() ,
+                            toread : true } ;
 
-					 bookService.addBook(book2) ;
+                        bookService.addBook(book2) ;
+                        
+                           
+                          
+                   
+                }) ;
+                
+
 		}
 
 })
-.controller('WishlistCtrl', function($scope,$http ,API_URL, bookService ) {
-	bookService.initDB(API_URL);
+.controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal) {
+    bookService.initDB(API_URL);
+    
+   
+   // set the rate and max variable for ionic rating
+    $scope.rate = 3;
+    $scope.max = 5;
+    
+    // modal for update item form 
+    $ionicModal.fromTemplateUrl('templates/itemupdateform.html', function($ionicModal) {
+        $scope.itemupdate = $ionicModal;
+    }, {
+            scope: $scope
+        }).then(function(itemupdate) {
+            $scope.itemupdate = itemupdate;
+     });
 
+    
+    $scope.end = true;
+    $scope.$on('$ionicView.enter', function(e) {
+        bookService.getToRead().then(function(books) {
+            $scope.wishlist = books;
+            $scope.end = false;
+        }).catch(function(err) {
+            console.log(err);
+        });
+
+    });
+    $scope.loadMore = function() {
+        if (!$scope.wishlist) {
+            console.log("wishlist undefined");
+            return;
+        }
+        var skip = $scope.wishlist ? $scope.wishlist.length : 0;
+        console.log("skip " + skip);
+        bookService.getToRead(skip).then(function(books) {
+            if (books.length == 0) {
+                $scope.end = true;
+            }
+            Array.prototype.push.apply($scope.wishlist, books);
+        }).finally(function() {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            
+
+        });
+    }; 
+    $scope.deleteItem = function(index) {
+        bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book) {
+            console.log(book);
+            $scope.wishlist.splice(index, 1);
+        });
+    }
+    $scope.updateItem = function(index) {
+        console.log('in'); 
+        $scope.itemupdate.show();
+        $scope.submitData = $scope.wishlist[index] ;
+        $scope.submitData.toread = "YES" ;        
+        $scope.itemupdate.show();
+        console.log($scope.submitData);
+    }
+    $scope.submitItem = function(index) {
+        
+        if($scope.submitData.toread != 'YES'){
+				$scope.submitData.toread = false ;
+                // remove from view 
+                $scope.wishlist.splice(index, 1) ;
+		} else{
+			$scope.submitData.toread = true ;
+		}
+        console.log($scope.submitData);
+        bookService.updateBook($scope.submitData) ;
+        $scope.itemupdate.hide();
+        
+        
+    }
+    
+    $scope.closeUpdateModal=	function(){
+        
+		 $scope.itemupdate.hide();
+	}
+    
+})
+.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal) {
+  bookService.initDB(API_URL);
+     // set the rate and max variable for ionic rating
+    $scope.rate = 3;
+    $scope.max = 5;
+    
+    // modal for update item form 
+    $ionicModal.fromTemplateUrl('templates/itemupdateform.html', function($ionicModal) {
+        $scope.itemupdate = $ionicModal;
+    }, {
+            scope: $scope
+        }).then(function(itemupdate) {
+            $scope.itemupdate = itemupdate;
+     });
+  
+  
     $scope.end = true ;
-		$scope.$on('$ionicView.enter', function(e) {
-				bookService.getToRead().then(function(books){
-						 $scope.wishlist = books ;
-						   $scope.end = false ;
-					}).catch(function (err){
-							console.log(err);
-					});
-		});
-		$scope.loadMore = function() {
-			console.log("in there");
-				if(!$scope.wishlist){
-					console.log("wishlist undefined");
-					return ;
-				}
-				var skip = $scope.wishlist ? $scope.wishlist.length : 0 ;
-				console.log("skip " + skip);
-				bookService.getToRead(skip).then(function(books){
-					if(books.length == 0) {
-						$scope.end = true ;
-					}
-					Array.prototype.push.apply($scope.wishlist,books);
-				}).finally(function(){
-						 $scope.$broadcast('scroll.infiniteScrollComplete');
-					});
-	  };
+    $scope.$on('$ionicView.enter', function(e) {
+        bookService.getAlreadyRead().then(function(books) {
+            $scope.readlist = books;
+            $scope.end = false;
+        }).catch(function(err) {
+            console.log(err);
+        });
+    });
+    $scope.loadMore = function() {
+        console.log("in there");
 
+        var skip = $scope.readlist ? $scope.readlist.length : 0;
+        console.log("skip " + skip);
+        bookService.getAlreadyRead(skip).then(function(books) {
+            if (books.length == 0) {
+                $scope.end = true;
+            }
+            Array.prototype.push.apply($scope.readlist, books);
+        }).finally(function() {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
+    };
+    $scope.deleteItem = function(index) {
+        bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book) {
+            console.log(book);
+            $scope.wishlist.splice(index, 1);
+        });
+    }
 
-		$scope.deleteBook = function(index){
-			bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book){
-				console.log(book);
-				$scope.wishlist.splice(index, 1);
-
-			});
-
-
+    $scope.updateItem = function(index) {
+        console.log('in');
+        $scope.itemupdate.show();
+        $scope.submitData = $scope.readlist[index] ;
+        $scope.submitData.toread = "NO" ;        
+        $scope.itemupdate.show();
+        console.log($scope.submitData);
+    }
+    $scope.submitItem = function(index) {
+        
+        if($scope.submitData.toread != 'NO'){
+				$scope.submitData.toread = true ;
+                // remove from view 
+                $scope.readlist.splice(index, 1) ;
+		} else{
+			$scope.submitData.toread = false;
 		}
-
-
-
-
-})
-.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService ) {
-	bookService.initDB(API_URL);
-  $scope.end = true ;
-		$scope.$on('$ionicView.enter', function(e) {
-				bookService.getAlreadyRead().then(function(books){
-						 $scope.readlist = books ;
-						 $scope.end = false ;
-					}).catch(function (err){
-							console.log(err);
-					});
-		});
-		$scope.loadMore = function() {
-			console.log("in there");
-
-				var skip = $scope.readlist ? $scope.readlist.length : 0 ;
-				console.log("skip " + skip);
-				bookService.getAlreadyRead(skip).then(function(books){
-					if(books.length == 0) {
-						$scope.end = true ;
-					}
-					Array.prototype.push.apply($scope.readlist,books);
-				}).finally(function(){
-						 $scope.$broadcast('scroll.infiniteScrollComplete');
-					});
-	  };
-
-
-		$scope.deleteBook = function(index){
-			bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book){
-				console.log(book);
-				$scope.wishlist.splice(index, 1);
-
-			});
-
-
-		}
-
+        console.log($scope.submitData);
+        bookService.updateBook($scope.submitData) ;
+       
+        $scope.itemupdate.hide();
+    }
+    
+    $scope.closeUpdateModal=	function(){
+		 $scope.itemupdate.hide();
+	}
 
 
 
@@ -295,44 +396,31 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                 $scope.data.selectedLanguage = language;
             });
         });
-
-
-
-
         $scope.languageChange = function (language) {
             // remove actual text from the input .
             $translate.use(language);
+            // save the change
+            settingsService.setLanguage(language);
         };
-
         $scope.savedatabase = function () {  
             // only if device ready ,this  won't work on browser emulation 
             $ionicPlatform.ready(function() {
-
-
                 bookService.saveDatabase().then(function (jsondata) {
-                     
                 var fileDir ;   
-                        
                 var date = new Date();
                 var bhookdbbackup = "bhook_db_backup_" + date.getFullYear().toString() + "_" + (date.getMonth() + 1).toString() + "_" + date.getDate().toString() + ".json";   
-                  
                 if (ionic.Platform.isAndroid()) {
                     // resolve the dir depending on type of device
                     console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
                      fileDir = cordova.file.externalRootDirectory  ;
                      console.log('ANDROID FILEDIR: ' + fileDir);
-                    
                 }
                 if (ionic.Platform.isIOS()) {
                     console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
                     fileDir = cordova.file.documentsDirectory; 
                     console.log('IOS FILEDIR: ' + fileDir);
                 }
-         
-
-
-                if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
-                                
+                if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {               
                     // Write  into file 
                     $cordovaFile.writeFile( fileDir , bhookdbbackup , jsondata , true).then(function (success) {
                             // success 
@@ -370,8 +458,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         $scope.restoredatabase = function () {
           $ionicPlatform.ready(function() { 
                 var fileDir ;   
-          
-                                        
                 var date = new Date();
                 var bhookdbbackup = "bhook.json";   
                   
@@ -416,14 +502,10 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                                     ]
                                 });
                             console.log('problem') ;
-                            
+                         
                         }
-                        
-                        
                     });
-                    
                 });                   
-                    
                 },function(error){
                                           $ionicPopup.show({
                                     template: $translate.instant("restore_db_error" +fileDir+bhookdbbackup ),
@@ -437,12 +519,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                     
                 } ) ;
                    
-
-              
-
-              
-              
-              
           });
               
               
@@ -451,6 +527,18 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 
     })
+    .controller('CreditsCtrl', function($scope, $translate) {
+        $scope.$on('$ionicView.enter', function(e) {
+            if ($translate.use() == "fr") {
+                $scope.creditsen = false;
+                $scope.creditsfr = true;
+            } else {
+                $scope.creditsfr = false;
+                $scope.creditsen = true;
+            }
+        });
+  
+})
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $http ,API_URL, bookService ) {
 
 	// With the new view caching in Ionic, Controllers are only called
@@ -462,7 +550,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
 	// Form data for the login modal
 
-
+ 
 
 
 })

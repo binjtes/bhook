@@ -21,6 +21,7 @@
           	<ion-item ng-repeat="book in latestbooks" style="" >
                 <h2>{{book.book}}</h2>
                 <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
+                <h5 style="float:right">{{ 'added_at' | translate }} {{book.added | date : 'dd/MM/yyyy  hh:mm'}}</h5>
 
             </ion-item>
             <ion-infinite-scroll ng-if="!end"

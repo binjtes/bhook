@@ -79,6 +79,7 @@ $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
         views: {
           'menuContent': {
             templateUrl: 'templates/credits.html',
+            controller: 'CreditsCtrl'
           }
         }      
   });
