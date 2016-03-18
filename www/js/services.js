@@ -38,7 +38,7 @@ angular.module('bhook.services', [])
     }])
     .factory('bookService', ['$q', '$window', bookService]);
 
-function bookService($q, $window) {
+function bookService($q, $window) { 
     var _db;
 
     var map = function (doc) {
@@ -46,12 +46,12 @@ function bookService($q, $window) {
     }
     var mapAuthLastNameToRead = function (doc) {
         if (doc.toread != false) {
-            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
+            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added,  _id: doc._id });
         }
     }
-    var mapAuthLastNameRead = function (doc) {
+    var mapAuthLastNameRead = function (doc) { 
         if (doc.toread == false) {
-            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added, _id: doc._id });
+            emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added,rate :doc.rate,comment: doc.comment, _id: doc._id });
         }
     }
     return {
@@ -65,30 +65,7 @@ function bookService($q, $window) {
                 _db.info().then(function (info) {
                     console.log(info);
                 })
-                // document that tells PouchDB/CouchDB
-                // to build up an index on doc.name
-               /* var ddoc = {
-                    _id: '_design/my_index',
-                    views: {
-                        by_name: {
-                            map: function (doc) { emit(doc.author_lastname); }.toString()
-                        },
-                        by_date: {
-                            map: function (doc) { emit(doc.added); }.toString()
-                        },
-                        by_toread: {
-                            map: function (doc) { emit(doc.toread); }.toString()
-                        }
-                    }
-                };
-                // save it
-                _db.put(ddoc).then(function () {
-                    // success!
-                    console.log('index created');
-                }).catch(function (err) {
-                    console.log('index already created');
-                    // some error (maybe a 409, because it already exists?)
-                });*/
+
 
             } 
         },       
@@ -118,9 +95,8 @@ function bookService($q, $window) {
                 descending: false,
                 skip: skip,
                 limit: 4
-            }))
+            })) 
                 .then(function (books) {
-                    console.log('entering query');
                     console.log(books);
                      console.log(books.rows);
                     console.log('**entering query');
@@ -214,14 +190,16 @@ function bookService($q, $window) {
                 console.log(err);
             }); 
         },
-       updateBook: function (submitData) {    
+       updateBook: function (submitData) {     
            return $q.when(_db.get(submitData._id, {conflicts: true})).then(function (updatedbook) {
-                return $q.when(_db.put(submitData,updatedbook._rev)).then(function (addedbook) {
+               console.log(updatedbook._rev);
+                return $q.when(_db.put(submitData,updatedbook._rev)).then(function (updatedbook) {
+                    console.log(updatedbook);
                     return updatedbook;
                     }).catch(function (err) {
                         console.log(err);
                     });    
-                // body...
+                // body... 
             }).catch(function (err) {
                 console.log(err);
             });

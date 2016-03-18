@@ -12,7 +12,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     $scope.rate = 3;
     $scope.max = 5;
     //data to populate a book object
-    $scope.submitData= {};
+    $scope.submitData= {"rate" : null }; 
     // other data values binded into controller
     $scope.data= {};
 
@@ -83,8 +83,8 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 		// remove unecessary fields
 	 		delete	$scope.submitData.author ;
 	 		// add timestamp
-	 		$scope.submitData['added'] = new Date();
-             
+	 		$scope.submitData['added'] = new Date(); 
+              
              // transform all capital letters
              $scope.submitData['author_lastname'] =  $scope.submitData['author_lastname'].toLowerCase() ;
              $scope.submitData['author_firstname'] =  $scope.submitData['author_firstname'].toLowerCase() ;
@@ -92,12 +92,12 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 			// build the id using alphabetical order
 			$scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'];
 
-      // field toread :change YES/NO for true false in database
-			if($scope.submitData.toread == 'YES'){
-				$scope.submitData.toread = true ;
+           // field toread :change YES/NO for true false in database
+			if($scope.submitData.toread == 'YES'){ 
+				$scope.submitData.toread = true ; 
 	 			//unset comments and star rating
 				delete $scope.submitData.comment ;
-				delete $scope.submitData.rating ;
+				delete $scope.submitData.rate ;
 
 			} else{
 				$scope.submitData.toread = false ;
