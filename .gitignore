@@ -10,3 +10,5 @@ www/lib/
 .project
 *.project
 .project
+.idea/*
+.idea/vcs.xml
