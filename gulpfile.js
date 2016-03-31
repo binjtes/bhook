@@ -16,6 +16,20 @@ var paths = {
 
 gulp.task('default', ['sass']);
 
+// ajout des config js dans le projet
+gulp.task('copylibs', function(done){
+	gulp.src(['./node_modules/pouchdb-load/dist/pouchdb.load.min.js',
+		'./node_modules/pouchdb/dist/pouchdb.min.js' ,
+		'./node_modules/pouchdb-replication-stream/dist/pouchdb.replication-stream.min.js',
+		'./node_modules/angular-translate/dist/angular-translate.min.js'
+		])
+		// Perform minification tasks, etc here
+		.pipe(gulp.dest('./www/lib/')) 
+		.on('end', done);
+
+});
+
+
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
@@ -78,3 +92,5 @@ gulp.task('replace', function () {
 
 
 	});
+
+
