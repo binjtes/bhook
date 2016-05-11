@@ -6,8 +6,11 @@
                 <input ng-click="addBook()" ng-model="data.formBookAuthorText" type="text">
             </label>
         </form>
-       <button class="button button-stable button-block " ng-click="testaddBook()">test add book </button>
+       <!-- 
+           <button class="button button-stable button-block " ng-click="testaddBook()">test add book </button>
          <button class="button button-stable button-block " ng-click="resetdb()">reset db  </button>
+         
+         -->
             <label style="" class="item item-input label-assertive">
 
                 <i class="icon ion-search placeholder-icon"></i>
@@ -19,10 +22,15 @@
           <ion-list>
  
           	<ion-item ng-repeat="book in latestbooks" style="" >
-                <h2>{{book.book}}</h2>
+
+                <h2 ng-switch on="book.toread">
+                    <i class="icon ion-ios-glasses placeholder-icon" ng-switch-when="false">
+                    </i>
+                    <i class="icon ion-ios-glasses-outline placeholder-icon" ng-switch-when="true"></i>
+                    {{book.book}}
+                </h2>
                 <h4>{{book.author_firstname}} {{book.author_lastname}}</h4>
                 <h5 style="float:right">{{ 'added_at' | translate }} {{book.added | date : 'dd/MM/yyyy  hh:mm'}}</h5>
-
             </ion-item>
             <ion-infinite-scroll ng-if="!end"
                 on-infinite="loadMore()"
