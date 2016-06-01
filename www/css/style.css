@@ -5,8 +5,7 @@
 }
 
 .alphabetlist:first-letter {
-   /*text-transform: capitalize;*/
-  color: red;
+
   font-size: 130%;
 }
 
@@ -19,7 +18,7 @@
 
   /* rating stars from /lib/ionic-rating */
 ul.rating{
-  color:#ffed52 !important ;
+  color:#15aff4 !important ;
   padding: 10px;
   text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(1,1,1,1);
 }

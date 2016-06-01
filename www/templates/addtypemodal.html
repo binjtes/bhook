@@ -1,0 +1,18 @@
+<ion-modal-view >
+  <ion-header-bar>
+    <h1 class="title">{{ 'choose_the_medium' | translate }}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeTypeModal()">{{ 'close' | translate }}</button>
+    </div> 
+  </ion-header-bar>
+  <ion-content>
+  <form distribute-input >
+  <div class="list">
+  <label class="item">
+    <button class="button button-block button-positive" type="submit" ng-click="submitTypeBook()" >{{ 'add' | translate }}</button>
+  </label>
+</div>
+
+   </form>
+  </ion-content>
+</ion-modal-view>

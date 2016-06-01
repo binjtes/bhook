@@ -9,7 +9,7 @@ var translations = {
         "title": "title",
         "added_at": "added at ",
         "menu": "menu",
-        "add_a_book": "Add (book, tv show, film, cd )",
+        "add_a_book": "Add a book",
         "latest_books": "Latest additions ",
         "search": "Search",
         "main_page": "Main page",
@@ -26,11 +26,12 @@ var translations = {
         "restore_db_error" : "Rename the previously backed up file into 'bhook.json'  and place the file here :",
         "about" : "About",
         "update item" : "update item",
-        "update" : "update"
+        "update" : "update",
+        "choose_the_medium" : "choose the medium"
 
     },
     "fr": {
-        "settings_language": "changer la langue utilisée",
+        "settings_language": "changer la langue utilisée", 
         "settings_db": "actions de sauvegardes",
         "settings_dump_db": "sauvegarde de la base de données",
         "settings_restore_db": "restauration de la base de donnée",
@@ -38,7 +39,7 @@ var translations = {
         "fr": "français",
         "menu": "menu",
         "close": "fermer",
-        "add_a_book": "Ajouter (livre, série, film, cd , autre)",
+        "add_a_book": "Ajouter un livre",
         "latest_books": "Derniers ajouts",
         "search": "Chercher",
         "main_page": "Page principale",
@@ -69,6 +70,7 @@ var translations = {
         "restore_db_error" : "Renommez le fichier de la sauvegarde en restore.bhook et placez le fichier à cet endroit :",
         "about" : "a propos",
         "update item" : "mode edition",
-        "update" : "mettre à jour"
+        "update" : "mettre à jour",
+        "choose_the_medium" : "choisir le type d'élémént"
     }
 }

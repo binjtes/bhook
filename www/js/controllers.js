@@ -25,6 +25,26 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
        
  	});
 
+
+
+    // Create the modal to choose the type of medium we are about to add
+    // this is not functionnal , i wait for a goot designer as i can't bother creating visuals
+    /*$ionicModal.fromTemplateUrl('templates/addtypemodal.html', function ($ionicModal) {
+        $scope.modaltypebook = $ionicModal;
+    }, {
+            scope: $scope
+        }).then(function (modaltypebook) {
+            $scope.modaltypebook = modaltypebook;
+        });
+     
+     
+     $scope.openModalTypeBook = function(){
+		 $scope.modaltypebook.show();
+	 }; 
+        
+        
+     */
+
     // the first skip for the latest book list is the first 8 already called by default
     // Create the auth/book distinction modal that is used before the insertion of data
     $ionicModal.fromTemplateUrl('templates/addauthbookmodal.html', function ($ionicModal) {
@@ -45,12 +65,17 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 });
 
 
+
+
 	 // addbook click - beginning of the input
 	 $scope.addBook = function(){
 		 // remove actual text from the input .
 		 $scope.data.formBookAuthorText = null;
 
 	};
+
+
+
 
 	 // opens a modal dialog window to sort values b/n  auth/book book/auth surn/firstname, to read true/false ..
 	 $scope.openModalAuthBook = function(){
@@ -69,6 +94,10 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 $scope.closeAuthModal=	function(){
 		 $scope.modalauth.hide();
 	 }
+     $scope.closeTypeModal=	function(){
+		 $scope.modaltype.hide();
+	 }
+     
 	 // prepare author data
 	 $scope.prepareAuthData = function(){
  		$scope.modalauthbook.hide();
