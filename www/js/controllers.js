@@ -372,11 +372,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         });
     };
     $scope.deleteItem = function(index) {
-        bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book) {
+        bookService.deleteBook($scope.readlist[index]['_id']).then(function(book) {
             console.log(book);
-            $scope.wishlist.splice(index, 1);
+            $scope.readlist.splice(index, 1);
         });
     }
+    
+    
 
     $scope.updateItem = function(index) {
         console.log('in');
