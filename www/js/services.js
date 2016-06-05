@@ -121,7 +121,7 @@ function bookService($q, $window) {
                 return dumpedString;
             }).catch(function (err) {
                 console.log('oh no an error', err);
-            });
+            }); 
  
 
             /*
