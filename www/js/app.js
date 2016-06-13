@@ -46,6 +46,15 @@ $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
         }
       }
     })
+   .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+        }
+      }
+    })
     .state('app.readlist', {
       url: '/readlist',
       views: {
