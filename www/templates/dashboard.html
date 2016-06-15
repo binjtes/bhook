@@ -23,7 +23,7 @@
 
           <ion-list>
  
-          	<ion-item ng-repeat="book in latestbooks" style="" >
+          	<ion-item ng-repeat="book in latestbooks track by $index " style="" >
 
                 <h2 ng-switch on="book.toread">
                     <i class="icon ion-pin placeholder-icon" ng-switch-when="true">

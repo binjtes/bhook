@@ -138,7 +138,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         // Facebook logout
         facebookConnectPlugin.logout(function(){
           $ionicLoading.hide();
-          $state.go('welcome');
+          console.log('user deconnected from facebook ');
         },
         function(fail){
           $ionicLoading.hide();
@@ -430,12 +430,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
     });
     $scope.loadMore = function() {
+        console.log("infinite scrolling called ");
         if (!$scope.wishlist) {
             console.log("wishlist undefined");
             return;
         }
         var skip = $scope.wishlist ? $scope.wishlist.length : 0;
-        console.log("skip " + skip);
+        console.log("infinite scrolling called skip " + skip);
         bookService.getToRead(skip).then(function(books) {
             if (books.length == 0) {
                 $scope.end = true;
@@ -443,8 +444,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             Array.prototype.push.apply($scope.wishlist, books);
         }).finally(function() {
             $scope.$broadcast('scroll.infiniteScrollComplete');
-            
-
+             
         });
     }; 
     $scope.deleteItem = function(index) {
