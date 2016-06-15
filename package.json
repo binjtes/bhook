@@ -8,11 +8,11 @@
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
     "gulp-rename": "^1.2.0",
-    "gulp-copy" : "^0.0.2",
-    "pouchdb-load" : "*",
-    "pouchdb" : "*",
-    "pouchdb-replication-stream" : "*",
-    "angular-translate" : "*"
+    "gulp-copy": "^0.0.2",
+    "pouchdb-load": "*",
+    "pouchdb": "*",
+    "pouchdb-replication-stream": "*",
+    "angular-translate": "*"
   },
   "devDependencies": {
     "bower": "^1.3.3",
@@ -35,5 +35,7 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
