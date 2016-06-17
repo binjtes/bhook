@@ -85,6 +85,7 @@ function bookService($q, $window) {
             } 
         },       
          getToRead: function (skip) {
+           
             return $q.when(_db.query(mapAuthLastNameToRead , {
                 descending: false,
                 skip: skip,
@@ -160,6 +161,7 @@ function bookService($q, $window) {
             
         }  ,  
         getLatestBooks: function (skip) {
+              
             return $q.when(_db.query(map, {
                 descending: true,
                 skip: skip,

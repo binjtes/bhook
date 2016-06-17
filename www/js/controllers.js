@@ -1,5 +1,5 @@
 angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
-.controller('LoginCtrl', function ($scope,$state,$q, UserService, bookService,settingsService,$ionicModal,$translate,$ionicLoading ) { 
+.controller('LoginCtrl', function ($scope,$state,$q, UserService, bookService,settingsService,$ionicModal,$translate,$ionicLoading,$ionicActionSheet ) { 
 
 
 
@@ -124,7 +124,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	$scope.showLogOutMenu = function() {
 		var hideSheet = $ionicActionSheet.show({
 			destructiveText: 'Logout',
-			titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+			titleText: $translate.instant("logging_out") ; ,
 			cancelText: 'Cancel',
 			cancel: function() {},
 			buttonClicked: function(index) {
@@ -134,11 +134,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				$ionicLoading.show({
 				  template: 'Logging out...'
 				});
-
+console.log("logging out") ;
         // Facebook logout
         facebookConnectPlugin.logout(function(){
+            
+            console.log("logged out") ;
           $ionicLoading.hide();
-          $state.go('welcome');
+        
         },
         function(fail){
           $ionicLoading.hide();
@@ -300,26 +302,29 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
  		$scope.submitData.author_lastname = "" ;
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
 	 }
+   $scope.end = true ;
    $scope.latestbooks = [];
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
-			console.log("$ionicView.enter") ;
+			console.log("$ionicView.enter " + $scope.end  ) ;
 			//debuggin directive
 			//$scope.openModalAuthBook();
-
-
+                
+            
 			 //Refresh list when entering the view, an item can have been updated/deleted in another controller
 			 bookService.getLatestBooks(0).then(function(bookssortedbydate){
 	 				$scope.latestbooks = bookssortedbydate ;
-					$scope.end = false ;
+					//$scope.end = false ;
 					console.log("first adding");
 	 				console.log(bookssortedbydate);
+                    $scope.end = false ;
 	 		 });
  		});
-
+ 
 		// infinite scrolling
-		$scope.end = false ;
+		
 		$scope.loadMore = function() {
+                console.log("load more fired " + $scope.end) ;
 				if(!$scope.latestbooks){
 					return;
 				}
@@ -328,6 +333,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				console.log("skip :" + skip);
 				bookService.getLatestBooks(skip).then(function(bookssortedbydate){
 					if(bookssortedbydate.length == 0) {
+                        console.log("no more to get ") ;
 						$scope.end = true ;
 					}
 					Array.prototype.push.apply($scope.latestbooks,bookssortedbydate);

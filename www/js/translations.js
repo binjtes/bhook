@@ -27,7 +27,8 @@ var translations = {
         "about" : "About",
         "update item" : "update item",
         "update" : "update",
-        "choose_the_medium" : "choose the medium"
+        "choose_the_medium" : "choose the medium",
+        "logging_out" : 'you are about to log out, you will not be able to share your bols on facebook'
 
     },
     "fr": {
@@ -71,6 +72,7 @@ var translations = {
         "about" : "a propos",
         "update item" : "mode edition",
         "update" : "mettre à jour",
-        "choose_the_medium" : "choisir le type d'élémént"
+        "choose_the_medium" : "choisir le type d'élémént",
+        "logging_out" : 'en vous déconnectant vous ne pourrez plus partager vos livres'    
     }
 }
