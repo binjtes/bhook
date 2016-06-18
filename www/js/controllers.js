@@ -2,16 +2,24 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 .controller('LoginCtrl', function ($scope,$state,$q, UserService, bookService,settingsService,$ionicModal,$translate,$ionicLoading,$ionicActionSheet ) { 
 
 
-
-        $scope.$on('$ionicView.enter', function(e) {
-            if ($translate.use() == "fr") {
-                $scope.loginen = false;
-                $scope.loginfr = true;
-            } else {
-                $scope.loginfr = false;
-                $scope.loginen = true;
-            }
-        });
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
+    console.log("logged :" +  logged ) ;
+    $scope.$on('$ionicView.enter', function(e) {
+        if ($translate.use() == "fr") {
+            $scope.loginen = false;
+            $scope.loginfr = true;
+        } else {
+            $scope.loginfr = false;
+            $scope.loginen = true;
+        }
+    });
 
 
 // from https://ionicthemes.com/tutorials/about/native-facebook-login-with-ionic-framework
@@ -119,12 +127,12 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
   
   // log out 
   
-  	$scope.user = UserService.getUser();
+  	
 
 	$scope.showLogOutMenu = function() {
 		var hideSheet = $ionicActionSheet.show({
 			destructiveText: 'Logout',
-			titleText: $translate.instant("logging_out") ; ,
+			titleText: $translate.instant("logging_out")  ,
 			cancelText: 'Cancel',
 			cancel: function() {},
 			buttonClicked: function(index) {
@@ -134,7 +142,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				$ionicLoading.show({
 				  template: 'Logging out...'
 				});
-console.log("logging out") ;
+        console.log("logging out") ;
         // Facebook logout
         facebookConnectPlugin.logout(function(){
             
@@ -407,8 +415,18 @@ console.log("logging out") ;
 		}
 
 })
-.controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal) {
+.controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal,UserService) {
     bookService.initDB(API_URL);
+    
+    
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
     
    
    // set the rate and max variable for ionic rating
@@ -459,6 +477,17 @@ console.log("logging out") ;
             $scope.wishlist.splice(index, 1);
         });
     }
+    
+    
+    $scope.shareItem = function(index) {
+        // TODO
+        console.log('in share , make a confirm box and send over to facebbok'); 
+
+        console.log($scope.submitData);
+    }
+    
+    
+    
     $scope.updateItem = function(index) {
         console.log('in'); 
         $scope.itemupdate.show();
@@ -489,11 +518,23 @@ console.log("logging out") ;
 	}
     
 })
-.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal) {
+.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal, UserService) {
   bookService.initDB(API_URL);
      // set the rate and max variable for ionic rating
     $scope.rate = 3;
     $scope.max = 5;
+    
+    
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
+    
+    
     
     // modal for update item form 
     $ionicModal.fromTemplateUrl('templates/itemupdateform.html', function($ionicModal) {
@@ -535,6 +576,12 @@ console.log("logging out") ;
         });
     }
     
+    $scope.shareItem = function(index) {
+        // TODO
+        console.log('in share , make a confirm box and send over to facebbok'); 
+
+        console.log($scope.submitData);
+    }
     
 
     $scope.updateItem = function(index) {

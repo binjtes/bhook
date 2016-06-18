@@ -19,9 +19,22 @@ angular.module('starter', ['ionic', 'pascalprecht.translate', 'ngCordova','bhook
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    
+    
+    
   });
 })
-.config(function($stateProvider, $urlRouterProvider, $translateProvider ) {
+.config(function($stateProvider, $urlRouterProvider, $cordovaFacebookProvider, $translateProvider ) {
+
+console.log($cordovaFacebookProvider);
+    // facebbok plugin cordova on the browser 
+   /* if (window.cordova.platformId == "browser") {
+        facebookConnectPlugin.browserInit(295174200815894, version);
+        // version is optional. It refers to the version of API you may want to use.
+    }*/
+
+
 
 $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 	for(lang in translations){

@@ -5,7 +5,7 @@
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h4 class=" item-icon-right" >{{book.book}}<i class="icon ion-star">{{book.rate }}</i> </h4>
             
-          
+           <ion-option-button class="button-royal icon ion-android-share-alt" ng-hide="!logged" ng-click="shareItem($index)"></ion-option-button>
            <ion-option-button class="button-positive icon ion-edit" ng-click="updateItem($index)"></ion-option-button>
            <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteItem($index)"></ion-option-button>
       </ion-item>
