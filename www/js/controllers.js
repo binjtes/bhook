@@ -1,17 +1,25 @@
 angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
-.controller('LoginCtrl', function ($scope,$state,$q, UserService, bookService,settingsService,$ionicModal,$translate,$ionicLoading ) { 
+.controller('LoginCtrl', function ($scope,$state,$q, UserService, bookService,settingsService,$ionicModal,$translate,$ionicLoading,$ionicActionSheet ) { 
 
 
-
-        $scope.$on('$ionicView.enter', function(e) {
-            if ($translate.use() == "fr") {
-                $scope.loginen = false;
-                $scope.loginfr = true;
-            } else {
-                $scope.loginfr = false;
-                $scope.loginen = true;
-            }
-        });
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
+    console.log("logged :" +  logged ) ;
+    $scope.$on('$ionicView.enter', function(e) {
+        if ($translate.use() == "fr") {
+            $scope.loginen = false;
+            $scope.loginfr = true;
+        } else {
+            $scope.loginfr = false;
+            $scope.loginen = true;
+        }
+    });
 
 
 // from https://ionicthemes.com/tutorials/about/native-facebook-login-with-ionic-framework
@@ -119,12 +127,12 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
   
   // log out 
   
-  	$scope.user = UserService.getUser();
+  	
 
 	$scope.showLogOutMenu = function() {
 		var hideSheet = $ionicActionSheet.show({
 			destructiveText: 'Logout',
-			titleText: 'Are you sure you want to logout? This app is awsome so I recommend you to stay.',
+			titleText: $translate.instant("logging_out")  ,
 			cancelText: 'Cancel',
 			cancel: function() {},
 			buttonClicked: function(index) {
@@ -134,11 +142,17 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				$ionicLoading.show({
 				  template: 'Logging out...'
 				});
-
+        console.log("logging out") ;
         // Facebook logout
         facebookConnectPlugin.logout(function(){
+            
+            console.log("logged out") ;
           $ionicLoading.hide();
+<<<<<<< HEAD
           console.log('user deconnected from facebook ');
+=======
+        
+>>>>>>> 2fb471e88f019e95a42c7ab58dca848130fa12f5
         },
         function(fail){
           $ionicLoading.hide();
@@ -300,26 +314,29 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
  		$scope.submitData.author_lastname = "" ;
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
 	 }
+   $scope.end = true ;
    $scope.latestbooks = [];
 	 // populate latest book
 		$scope.$on('$ionicView.enter', function(e) {
-			console.log("$ionicView.enter") ;
+			console.log("$ionicView.enter " + $scope.end  ) ;
 			//debuggin directive
 			//$scope.openModalAuthBook();
-
-
+                
+            
 			 //Refresh list when entering the view, an item can have been updated/deleted in another controller
 			 bookService.getLatestBooks(0).then(function(bookssortedbydate){
 	 				$scope.latestbooks = bookssortedbydate ;
-					$scope.end = false ;
+					//$scope.end = false ;
 					console.log("first adding");
 	 				console.log(bookssortedbydate);
+                    $scope.end = false ;
 	 		 });
  		});
-
+ 
 		// infinite scrolling
-		$scope.end = false ;
+		
 		$scope.loadMore = function() {
+                console.log("load more fired " + $scope.end) ;
 				if(!$scope.latestbooks){
 					return;
 				}
@@ -328,6 +345,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				console.log("skip :" + skip);
 				bookService.getLatestBooks(skip).then(function(bookssortedbydate){
 					if(bookssortedbydate.length == 0) {
+                        console.log("no more to get ") ;
 						$scope.end = true ;
 					}
 					Array.prototype.push.apply($scope.latestbooks,bookssortedbydate);
@@ -401,8 +419,18 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 		}
 
 })
-.controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal) {
+.controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal,UserService) {
     bookService.initDB(API_URL);
+    
+    
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
     
    
    // set the rate and max variable for ionic rating
@@ -453,6 +481,17 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             $scope.wishlist.splice(index, 1);
         });
     }
+    
+    
+    $scope.shareItem = function(index) {
+        // TODO
+        console.log('in share , make a confirm box and send over to facebbok'); 
+
+        console.log($scope.submitData);
+    }
+    
+    
+    
     $scope.updateItem = function(index) {
         console.log('in'); 
         $scope.itemupdate.show();
@@ -483,11 +522,23 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	}
     
 })
-.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal) {
+.controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal, UserService) {
   bookService.initDB(API_URL);
      // set the rate and max variable for ionic rating
     $scope.rate = 3;
     $scope.max = 5;
+    
+    
+    $scope.user = UserService.getUser();
+    
+    console.log("user :" +  $scope.user ) ;
+    var logged = false ;
+    if($scope.user.userID != null) {
+        logged = true ;
+    }
+    
+    
+    
     
     // modal for update item form 
     $ionicModal.fromTemplateUrl('templates/itemupdateform.html', function($ionicModal) {
@@ -508,6 +559,29 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             console.log(err);
         });
     });
+
+
+
+ $ionicModal.fromTemplateUrl('templates/showreadbook.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.showDetails = function(index) { 
+
+     var currentbook =$scope.readlist[index] ;
+     console.log(currentbook);      
+     $scope.modal.show();
+
+ };
+
+
     $scope.loadMore = function() {
         console.log("in there");
 
@@ -529,6 +603,12 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         });
     }
     
+    $scope.shareItem = function(index) {
+        // TODO
+        console.log('in share , make a confirm box and send over to facebbok'); 
+
+        console.log($scope.submitData);
+    }
     
 
     $scope.updateItem = function(index) {
