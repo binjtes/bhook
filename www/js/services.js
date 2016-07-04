@@ -1,6 +1,7 @@
 angular.module('bhook.services', [])
 .factory('UserService', ['$q', function ($q) {
   // For the purpose of this example I will store user data on ionic local storage but you should save it on a database
+  //bp : i cant bother
   var setUser = function(user_data) {
     window.localStorage.starter_facebook_user = JSON.stringify(user_data);
   };
@@ -85,6 +86,7 @@ function bookService($q, $window) {
             } 
         },       
          getToRead: function (skip) {
+           
             return $q.when(_db.query(mapAuthLastNameToRead , {
                 descending: false,
                 skip: skip,
@@ -160,6 +162,7 @@ function bookService($q, $window) {
             
         }  ,  
         getLatestBooks: function (skip) {
+              
             return $q.when(_db.query(map, {
                 descending: true,
                 skip: skip,

@@ -5,14 +5,14 @@
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h5 class="item-icon-right" >{{book.book}}<i class="icon ion-star">{{book.rate }}</i> </h5>
             
-          
+           <ion-option-button class="button-royal icon ion-android-share-alt" ng-hide="!logged" ng-click="shareItem($index)"></ion-option-button>
            <ion-option-button class="button-positive icon ion-edit" ng-click="updateItem($index)"></ion-option-button>
            <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteItem($index)"></ion-option-button>
       </ion-item>
  
   </ion-list>
   <ion-infinite-scroll ng-if="!end"
-      on-infinite="loadMore()"
+      on-infinite="loadMore()" immediate-check="false"
       distance="25%">
     </ion-infinite-scroll>
   </ion-content>

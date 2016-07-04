@@ -148,11 +148,11 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             
             console.log("logged out") ;
           $ionicLoading.hide();
-<<<<<<< HEAD
+
           console.log('user deconnected from facebook ');
-=======
+
         
->>>>>>> 2fb471e88f019e95a42c7ab58dca848130fa12f5
+
         },
         function(fail){
           $ionicLoading.hide();

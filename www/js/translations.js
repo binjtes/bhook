@@ -27,8 +27,10 @@ var translations = {
         "about" : "About",
         "update item" : "update item",
         "update" : "update",
-        "choose_the_medium" : "choose the medium"
-
+        "choose_the_medium" : "choose the medium",
+        "logging_out" : 'you are about to log out, you will not be able to share your books on facebook anymore ',
+        "login_with_facebook" : 'login with facebook',
+        "logout_from_facebook" : 'logout from facebook'
     },
     "fr": {
         "settings_language": "changer la langue utilisée", 
@@ -71,6 +73,10 @@ var translations = {
         "about" : "a propos",
         "update item" : "mode edition",
         "update" : "mettre à jour",
-        "choose_the_medium" : "choisir le type d'élémént"
-    }
+        "choose_the_medium" : "choisir le type d'élémént",
+        "logging_out" : 'en vous déconnectant vous ne pourrez plus partager vos livres sur votre mur facebook ',    
+        "login_with_facebook" : 'se connecter',
+        "logout_from_facebook" : 'se déconnecter de facebook'
+
+}
 }
