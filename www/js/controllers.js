@@ -561,12 +561,15 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     });
 
 
-
+ 
  $ionicModal.fromTemplateUrl('templates/showreadbook.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.modal = modal;
+
+      $scope.modal = modal;
+      console.log("arg")
+    console.log($scope.modal)
   });
 
   $scope.closeModal = function() {
@@ -576,12 +579,11 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
   $scope.showDetails = function(index) { 
 
      var currentbook =$scope.readlist[index] ;
-     console.log(currentbook);      
+     $scope.submitData = $scope.readlist[index] ;
      $scope.modal.show();
-
  };
 
-
+ 
     $scope.loadMore = function() {
         console.log("in there");
 
@@ -596,6 +598,8 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             $scope.$broadcast('scroll.infiniteScrollComplete');
         });
     };
+
+    
     $scope.deleteItem = function(index) {
         bookService.deleteBook($scope.readlist[index]['_id']).then(function(book) {
             console.log(book);
@@ -612,7 +616,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     
 
     $scope.updateItem = function(index) {
-        console.log('in');
         $scope.itemupdate.show();
         $scope.submitData = $scope.readlist[index] ;
         $scope.submitData.toread = "NO" ;        
