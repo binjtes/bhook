@@ -576,12 +576,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     $scope.modal.hide();
   };
 
-  $scope.showDetails = function(index) { 
 
-     var currentbook =$scope.readlist[index] ;
-     $scope.submitData = $scope.readlist[index] ;
-     $scope.modal.show();
- };
 
  
     $scope.loadMore = function() {

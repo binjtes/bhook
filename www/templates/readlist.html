@@ -1,10 +1,10 @@
 <ion-view view-title="bhook - {{ 'already_read_list' | translate }}">
   <ion-content class="has-header" padding="true">
     <ion-list show-delete="false" can-swipe="true">
-      <ion-item ng-repeat="book in readlist track by $index" class="alphabetlist" ng-click="showDetails($index)" >
+      <ion-item ng-repeat="book in readlist track by $index" class="alphabetlist" ng-click="isDetailOpen = !isDetailOpen"" >
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h5 class="item-icon-right" >{{book.book}}<i class="icon ion-star">{{book.rate }}</i> </h5>
-            
+            <div class="item-text-wrap" ng-show="isDetailOpen" >{{book.comment}}</div>
            <ion-option-button class="button-royal icon ion-android-share-alt" ng-hide="!logged" ng-click="shareItem($index)"></ion-option-button>
            <ion-option-button class="button-positive icon ion-edit" ng-click="updateItem($index)"></ion-option-button>
            <ion-option-button class="button-assertive icon ion-trash-a" ng-click="deleteItem($index)"></ion-option-button>
