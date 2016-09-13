@@ -110,5 +110,3 @@ $ionicPlatform.ready(function () {
         // Other functions here
     }
 });
-
-}]);

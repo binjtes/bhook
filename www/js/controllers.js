@@ -6,7 +6,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     
     console.log("user :" +  $scope.user ) ;
     var logged = false ;
-    if($scope.user.userID != null) {
+    if($scope.user.userID !== null) {
         logged = true ;
     }
     
@@ -243,28 +243,28 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 		 $scope.modalauthbook.show();
 		 $scope.submitData.toread = 'YES';
 		 $scope.arrowDirectionClass = "ion-arrow-down-c";
-		 $scope.sensetogo = "right"
-		 $scope.submitData.author= $scope.data.formBookAuthorText.split(/[\s+]+/gm).filter(Boolean).join(" "); ;
+		 $scope.sensetogo = "right";
+		 $scope.submitData.author= $scope.data.formBookAuthorText.split(/[\s+]+/gm).filter(Boolean).join(" ");
 		 $scope.submitData.book = "" ;
 	 };
 
 	 // close the AuthBook modal
 	 $scope.closeAuthBookModal=	function(){
 		 $scope.modalauthbook.hide();
-	 }
+	 };
 	 $scope.closeAuthModal=	function(){
 		 $scope.modalauth.hide();
-	 }
+	 };
      $scope.closeTypeModal=	function(){
 		 $scope.modaltype.hide();
-	 }
+	 };
      
 	 // prepare author data
 	 $scope.prepareAuthData = function(){
  		$scope.modalauthbook.hide();
  		// we need the firstname/lastname distinction for an author
  		$scope.openAuthModal();
-	 }
+	 };
 
 
 	 // submitAuthBook
@@ -273,14 +273,14 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 	 		// remove unecessary fields
 	 		delete	$scope.submitData.author ;
 	 		// add timestamp
-	 		$scope.submitData['added'] = new Date(); 
+	 		$scope.submitData.added = new Date(); 
               
              // transform all capital letters
-             $scope.submitData['author_lastname'] =  $scope.submitData['author_lastname'].toLowerCase() ;
-             $scope.submitData['author_firstname'] =  $scope.submitData['author_firstname'].toLowerCase() ;
-             $scope.submitData['book'] =  $scope.submitData['book'].toLowerCase() ;
+             $scope.submitData.author_lastname =  $scope.submitData.author_lastname.toLowerCase() ;
+             $scope.submitData.author_firstname =  $scope.submitData.author_firstname.toLowerCase() ;
+             $scope.submitData.book =  $scope.submitData.book.toLowerCase() ;
 			// build the id using alphabetical order
-			$scope.submitData['_id'] = $scope.submitData['author_lastname']+'-'+$scope.submitData['author_firstname']+'-'+$scope.submitData['book'];
+			$scope.submitData._id = $scope.submitData.author_lastname+'-'+$scope.submitData.author_firstname+'-'+$scope.submitData.book;
 
            // field toread :change YES/NO for true false in database
 			if($scope.submitData.toread == 'YES'){ 
@@ -300,7 +300,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 					$scope.modalauth.hide();
 					$scope.data.formBookAuthorText = $translate.instant("add_a_book") ;
 	 		});
-	 }
+	 };
 	 // open the AuthModal
 	 $scope.openAuthModal=	function(){
  		$scope.modalauth.show();
@@ -309,7 +309,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
  		$scope.submitData.author_firstname = $scope.submitData.author.split(/[\s+]+/gm).filter(Boolean).join(" ");
  		$scope.submitData.author_lastname = "" ;
 		$scope.formBookAuthorText = $translate.instant("add_a_book") ;
-	 }
+	 };
    $scope.end = true ;
    $scope.latestbooks = [];
 	 // populate latest book
@@ -340,7 +340,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 				skip = $scope.latestbooks ? $scope.latestbooks.length : 0 ;
 				console.log("skip :" + skip);
 				bookService.getLatestBooks(skip).then(function(bookssortedbydate){
-					if(bookssortedbydate.length == 0) {
+					if(bookssortedbydate.length === 0) {
                         console.log("no more to get ") ;
 						$scope.end = true ;
 					}
@@ -412,7 +412,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                 }) ;
                 
 
-		}
+		};
 
 })
 .controller('WishlistCtrl', function($scope, $http, API_URL, bookService, $ionicModal,UserService) {
@@ -423,7 +423,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     
     console.log("user :" +  $scope.user ) ;
     var logged = false ;
-    if($scope.user.userID != null) {
+    if($scope.user.userID !== null) {
         logged = true ;
     }
     
@@ -461,7 +461,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         var skip = $scope.wishlist ? $scope.wishlist.length : 0;
         console.log("skip " + skip);
         bookService.getToRead(skip).then(function(books) {
-            if (books.length == 0) {
+            if (books.length === 0) {
                 $scope.end = true;
             }
             Array.prototype.push.apply($scope.wishlist, books);
@@ -472,11 +472,11 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         });
     }; 
     $scope.deleteItem = function(index) {
-        bookService.deleteBook($scope.wishlist[index]['_id']).then(function(book) {
+        bookService.deleteBook($scope.wishlist[index]._id).then(function(book) {
             console.log(book);
             $scope.wishlist.splice(index, 1);
         });
-    }
+    };
     
     
     $scope.shareItem = function(index) {
@@ -484,7 +484,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         console.log('in share , make a confirm box and send over to facebbok'); 
 
         console.log($scope.submitData);
-    }
+    };
     
     
     
@@ -495,7 +495,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         $scope.submitData.toread = "YES" ;        
         $scope.itemupdate.show();
         console.log($scope.submitData);
-    }
+    };
     $scope.submitItem = function(index) {
         
         if($scope.submitData.toread != 'YES'){
@@ -510,12 +510,12 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         $scope.itemupdate.hide();
         
         
-    }
+    };
     
     $scope.closeUpdateModal=	function(){
         
 		 $scope.itemupdate.hide();
-	}
+	};
     
 })
 .controller('ReadlistCtrl', function($scope,$http ,API_URL, bookService , $ionicModal, UserService) {
@@ -529,7 +529,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     
     console.log("user :" +  $scope.user ) ;
     var logged = false ;
-    if($scope.user.userID != null) {
+    if($scope.user.userID !== null) {
         logged = true ;
     }
     
@@ -561,7 +561,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         var skip = $scope.readlist ? $scope.readlist.length : 0;
         console.log("skip " + skip);
         bookService.getAlreadyRead(skip).then(function(books) {
-            if (books.length == 0) {
+            if (books.length === 0) {
                 $scope.end = true;
             }
             Array.prototype.push.apply($scope.readlist, books);
@@ -570,18 +570,18 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         });
     };
     $scope.deleteItem = function(index) {
-        bookService.deleteBook($scope.readlist[index]['_id']).then(function(book) {
+        bookService.deleteBook($scope.readlist[index]._id).then(function(book) {
             console.log(book);
             $scope.readlist.splice(index, 1);
         });
-    }
+    };
     
     $scope.shareItem = function(index) {
         // TODO
         console.log('in share , make a confirm box and send over to facebbok'); 
 
         console.log($scope.submitData);
-    }
+    };
     
 
     $scope.updateItem = function(index) {
@@ -591,7 +591,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         $scope.submitData.toread = "NO" ;        
         $scope.itemupdate.show();
         console.log($scope.submitData);
-    }
+    };
     $scope.submitItem = function(index) {
         
         if($scope.submitData.toread != 'NO'){
@@ -605,11 +605,11 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
         bookService.updateBook($scope.submitData) ;
        
         $scope.itemupdate.hide();
-    }
+    };
     
     $scope.closeUpdateModal=	function(){
 		 $scope.itemupdate.hide();
-	}
+	};
 
 
 
@@ -717,7 +717,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
                     console.log('read as text result : ' + dumpedbased) ;
                     bookService.restoreDatabase(dumpedbased).then(function (result) {
                         console.log('result returned ' + result ) ;
-                        if(result == true){
+                        if(result === true){
                             console.log('apparently restored') ;
                             $ionicPopup.show({
                                     template: $translate.instant("restore_db_info"),

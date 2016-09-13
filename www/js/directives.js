@@ -19,7 +19,7 @@ return{
    						fnarr.pop();
    					} else {
                 scope.sensetogo = "left";
-   							if (lnarr.length	> 0 &&	scope.sensetogo == "left") {
+   							if (lnarr.length	> 0 &&	scope.sensetogo === "left") {
    								 fnarr.unshift(lnarr[lnarr.length - 1]);
    								 lnarr.pop();
    							}else{
@@ -30,10 +30,10 @@ return{
    					scope.submitData.author_firstname = fnarr.join(" ");
    					scope.submitData.author_lastname = lnarr.join(" ");
    					// change arrow direction
-   					if(fnarr.length == 0 ){
+   					if(fnarr.length === 0 ){
    						scope.arrowDirectionClass = "ion-arrow-up-c";
    					}
-   					if(lnarr.length == 0 ){
+   					if(lnarr.length === 0 ){
                 scope.arrowDirectionClass = "ion-arrow-down-c";
    					}
      			return ;
@@ -57,14 +57,14 @@ return{
 				 scope.submitData.author = autharr.join(" ");
 				 scope.submitData.book = bookarr.join(" ");
 				 // change arrow direction
-				 if(autharr.length == 0 ){
+				 if(autharr.length === 0 ){
 				 	scope.arrowDirectionClass = "ion-arrow-up-c";
 				 }
-				 if(bookarr.length == 0 ){
+				 if(bookarr.length === 0 ){
            scope.arrowDirectionClass = "ion-arrow-down-c";
 				 }
-      }
+      };
     }
-  }
+  };
 
-})
+});
