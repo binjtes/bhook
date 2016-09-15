@@ -12,7 +12,6 @@
            <button class="button button-stable button-block " ng-click="testaddBook()">test add book </button>
          <button class="button button-stable button-block " ng-click="resetdb()">reset db  </button>
          
-     
             <label style="" class="item item-input label-assertive">
 
                 <i class="icon ion-search placeholder-icon"></i>
@@ -23,7 +22,7 @@
 
           <ion-list>
  
-          	<ion-item ng-repeat="book in latestbooks" style="" >
+          	<ion-item ng-repeat="book in latestbooks track by $index " style="" >
 
                 <h2 ng-switch on="book.toread">
                     <i class="icon ion-pin placeholder-icon" ng-switch-when="true">

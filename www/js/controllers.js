@@ -148,7 +148,11 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             
             console.log("logged out") ;
           $ionicLoading.hide();
+
+          console.log('user deconnected from facebook ');
+
         
+
         },
         function(fail){
           $ionicLoading.hide();
@@ -454,12 +458,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 
     });
     $scope.loadMore = function() {
+        console.log("infinite scrolling called ");
         if (!$scope.wishlist) {
             console.log("wishlist undefined");
             return;
         }
         var skip = $scope.wishlist ? $scope.wishlist.length : 0;
-        console.log("skip " + skip);
+        console.log("infinite scrolling called skip " + skip);
         bookService.getToRead(skip).then(function(books) {
             if (books.length === 0) {
                 $scope.end = true;
@@ -467,8 +472,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             Array.prototype.push.apply($scope.wishlist, books);
         }).finally(function() {
             $scope.$broadcast('scroll.infiniteScrollComplete');
-            
-
+             
         });
     }; 
     $scope.deleteItem = function(index) {
@@ -555,6 +559,26 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             console.log(err);
         });
     });
+
+
+ 
+ $ionicModal.fromTemplateUrl('templates/showreadbook.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+
+      $scope.modal = modal;
+      console.log("arg")
+    console.log($scope.modal)
+  });
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+
+
+ 
     $scope.loadMore = function() {
         console.log("in there");
 
@@ -569,6 +593,8 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             $scope.$broadcast('scroll.infiniteScrollComplete');
         });
     };
+
+    
     $scope.deleteItem = function(index) {
         bookService.deleteBook($scope.readlist[index]._id).then(function(book) {
             console.log(book);
@@ -585,7 +611,6 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
     
 
     $scope.updateItem = function(index) {
-        console.log('in');
         $scope.itemupdate.show();
         $scope.submitData = $scope.readlist[index] ;
         $scope.submitData.toread = "NO" ;        

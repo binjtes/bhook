@@ -1,7 +1,7 @@
 <ion-view view-title="bhook - {{ 'to_read_list' | translate }}">
   <ion-content class="has-header" padding="true">
     <ion-list show-delete="false" can-swipe="true">
-      <ion-item ng-repeat="book in wishlist" class="alphabetlist" >
+      <ion-item ng-repeat="book in wishlist track by $index" class="alphabetlist" >
           <h2 >{{book.author_lastname}}, {{book.author_firstname}}</h2>
           <h4>{{book.book}} </h4>
            <ion-option-button class="button-royal icon ion-android-share-alt" ng-hide="!logged" ng-click="shareItem($index)"></ion-option-button>

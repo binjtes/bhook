@@ -32,3 +32,16 @@ ul.rating li i {
   font-size: 30px;
 }
 /*end ionic rating*/
+
+
+
+/* modal to show commentaries (limited to half the page) */
+.modalshowcomment{
+  bottom: 0;  
+  min-height: initial;
+  top: initial;
+  height: 50%;
+  width: 90%; 
+}
+    
+
