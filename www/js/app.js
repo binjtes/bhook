@@ -37,7 +37,7 @@ console.log($cordovaFacebookProvider);
 
 
 $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
-	for(lang in translations){
+	for(var lang in translations){
 		$translateProvider.translations(lang, translations[lang]);
 	}
 

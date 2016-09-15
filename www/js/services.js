@@ -19,7 +19,7 @@ angular.module('bhook.services', [])
         var _dbsettings;
         return {
             initDB: function () {
-                if (_dbsettings == undefined) {
+                if (_dbsettings === undefined) {
                     _dbsettings = new PouchDB('bhooksettings', { adapter: 'websql' });
                 }
             },
@@ -42,7 +42,7 @@ angular.module('bhook.services', [])
             getLanguage: function () {
                 return $q.when(_dbsettings.get('applanguage', {})).then(function (setlanguage) {
                     console.log(setlanguage);
-                    return setlanguage['language'];
+                    return setlanguage.language;
                 }).catch(function (err) {
                     // return default value ;
                     console.log(err);
@@ -50,7 +50,7 @@ angular.module('bhook.services', [])
                 });
 
             }
-        }
+        };
     }])
     .factory('bookService', ['$q', '$window', bookService]);
 
@@ -59,20 +59,20 @@ function bookService($q, $window) {
 
     var map = function (doc) {
         emit({ added: doc.added, author_lastname: doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, _id: doc._id, toread: doc.toread });
-    }
+    };
     var mapAuthLastNameToRead = function (doc) {
-        if (doc.toread != false) {
+        if (doc.toread !== false) {
             emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added,  _id: doc._id });
         }
-    }
+    };
     var mapAuthLastNameRead = function (doc) { 
-        if (doc.toread == false) {
+        if (doc.toread === false) {
             emit({ author_lastname : doc.author_lastname, author_firstname: doc.author_firstname, book: doc.book, added: doc.added,rate :doc.rate,comment: doc.comment, _id: doc._id });
         }
-    }
+    };
     return {
         initDB: function (API_URL) {
-            if (_db == undefined) {
+            if (_db === undefined) {
                 console.log("instantiate DB locally and eventually " + API_URL);
                 _db = new PouchDB('bhook', { adapter: 'websql' });
                 PouchDB.debug.enable('*');
@@ -80,7 +80,7 @@ function bookService($q, $window) {
                 // PouchDB.replicate('bhook', API_URL + '/bhook', {live: true});
                 _db.info().then(function (info) {
                     console.log(info);
-                })
+                });
 
 
             } 
@@ -95,7 +95,7 @@ function bookService($q, $window) {
                 .then(function (books) {
                     var booksbyauthorname;
                     booksbyauthorname = books.rows.map(function (row) {
-                        return row['key'];
+                        return row.key;
                     });
                       console.log(books);
                     return booksbyauthorname;
@@ -119,7 +119,7 @@ function bookService($q, $window) {
                     console.log('**entering query');
                     var booksbyauthorname;
                     booksbyauthorname = books.rows.map(function (row) {
-                        return row['key'];
+                        return row.key;
                     });
 
                     return booksbyauthorname;
@@ -171,7 +171,7 @@ function bookService($q, $window) {
                 .then(function (books) {
                     var booksbydate;
                     booksbydate = books.rows.map(function (row) {
-                        return row['key'];
+                        return row.key;
                     });
                     return booksbydate;
                 }).catch(function (err) {
@@ -199,7 +199,7 @@ function bookService($q, $window) {
                 );
         },
         addBook: function (submitData) {
-            console.log("about to submit ")
+            console.log("about to submit ");
             console.log(submitData);
             return $q.when(_db.put(submitData)).then(function (addedbook) {
                 return addedbook;
@@ -235,11 +235,11 @@ function bookService($q, $window) {
                     // error occurred
                     console.log("err" + err);
                     
-                })
+                });
             }else{
                 return false ;
             }
 
         }
-    }
+    };
 }

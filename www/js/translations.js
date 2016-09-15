@@ -79,4 +79,4 @@ var translations = {
         "logout_from_facebook" : 'se déconnecter de facebook'
 
 }
-}
+};
