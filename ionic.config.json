@@ -1,0 +1,13 @@
+{
+  "name": "bhook",
+  "app_id": "",
+  "defaultBrowser": "chrome",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

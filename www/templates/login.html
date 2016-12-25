@@ -2,38 +2,27 @@
  <ion-content class="has-header" padding="true">
         <div ng-show="loginen">
                 <div class="card">
-
                 <div class="item item-text-wrap">
                     <p>
-                       By login to facebook, you'll be able to post your book reviews or requests and share those with your friends
+                       By login to facebook, you'll be able to post your book reviews on your wall  and share those with your friends
                     </p>
-                   
                 </div>
-
-                
               </div>
             
         </div>
         <div ng-show="loginfr">
             <div class="card">
-
                     <div class="item item-text-wrap ">
-                    <p>
-                       En vous connectant à Facebook vous pourrez partager vos critiques de livres et partager vos demandes avec vos amis
+                    <p> 
+                       En vous connectant à Facebook vous pourrez partager vos critiques de livres sur votre mur
                     </p> 
-                   
                 </div>
-
-             
                 </div>
             </div>
-
         </div>
- 
-    <button class="facebook-sign-in button button-block" ng-click="facebookSignIn()" ng-disabled="!logged" >
+    <button class="facebook-sign-in button button-block" ng-click="facebookSignIn()" ng-disabled="logged" >
          <i class="icon ion-android-share-alt placeholder-icon" > </i>
         {{ 'login_with_facebook' | translate }}</button>
-    
-    <button class="button button-block" ng-click="showLogOutMenu()" ng-disabled="logged">{{ 'logout_from_facebook' | translate }}</button>
+    <button class="button button-block" ng-click="showLogOutMenu()" ng-disabled="!logged">{{ 'logout_from_facebook' | translate }}</button>
   </ion-content>
 </ion-view>

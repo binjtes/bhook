@@ -1,6 +1,9 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">{{submitData.book}}</h1>
+    <h1 class="title">{{ 'share on facebook' | translate }}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeShareModal()">{{ 'close' | translate }}</button>
+    </div>
   </ion-header-bar>
   <ion-content >
     <h2> {{book.book}}</h2> 

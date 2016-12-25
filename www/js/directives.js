@@ -4,10 +4,7 @@ return{
     restrict :'A',
     scope: false,
     link: function(scope, element, attrs){
- 
       scope.toggleAdditionalForm = function toggleAdditionalForm(){
-        console.log(scope.submitData.toread);
-
       }; 
       scope.movetext = function movetext(authoronly){
         if(authoronly){

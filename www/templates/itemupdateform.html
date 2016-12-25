@@ -1,37 +1,37 @@
-<ion-modal-view >
+<ion-modal-view>
   <ion-header-bar>
     <h1 class="title">{{ 'update item' | translate }}</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeUpdateModal()">{{ 'close' | translate }}</button>
-    </div> 
+    </div>
   </ion-header-bar>
   <ion-content>
-  <form distribute-input >
-  <div class="list">
-  <label class="item item-input">
+    <form distribute-input>
+      <div class="list">
+        <label class="item item-input">
     <span class="input-label">{{ 'first name' | translate }}</span>
     <input type="text" id="author_firstname"  ng-model="submitData.author_firstname">
   </label>
-  <label class="item item-input">
+        <label class="item item-input">
     <span class="input-label">{{ 'last name' | translate }}</span>
     <input type="text" id="book" ng-model="submitData.author_lastname">
   </label>
-    <label class="item item-input">
+        <label class="item item-input">
     <span class="input-label">{{ 'title' | translate }}</span>
     <input type="text" id="book" ng-model="submitData.book">
   </label>
-   <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-init="checked=true" ng-click="toggleAdditionalForm()">  {{ 'to_discover' | translate }}</ion-checkbox>
-    <div class="list" ng-model="rating" ng-show="submitData.toread == 'NO'" >
-    <rating ng-model="submitData.rate"  max="max" > </rating>
-    <label class="item item-input">
+        <ion-checkbox ng-model="submitData.toread" ng-true-value="'YES'" ng-false-value="'NO'" ng-init="checked=true" ng-click="toggleAdditionalForm()">
+        {{ 'to_discover' | translate }}</ion-checkbox>
+        <div class="list" ng-model="rating" ng-show="submitData.toread == 'NO'">
+          <rating ng-model="submitData.rate" max="max"> </rating>
+          <label class="item item-input">
     <textarea placeholder="{{ 'comment' | translate }}" ng-model="submitData.comment" ></textarea>
      </label>
-    </div>
-  <label class="item">
+        </div>
+        <label class="item">
     <button class="button button-block button-positive" type="submit" ng-click="submitItem()" >{{ 'update' | translate }}</button>
   </label>
-</div> 
-
-   </form>
+      </div>
+    </form>
   </ion-content>
 </ion-modal-view>

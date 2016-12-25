@@ -31,21 +31,17 @@ angular.module('bhook.services', [])
                         return $q.when(_dbsettings.put(languageArr,updatelanguage._rev)).then(function (addedlanguage) {
                             return addedlanguage;
                             }).catch(function (err) {
-                                console.log(err);
                             });    
                         // body...
                     }).catch(function (err) {
-                        console.log(err);
                     });                
           
             },
             getLanguage: function () {
                 return $q.when(_dbsettings.get('applanguage', {})).then(function (setlanguage) {
-                    console.log(setlanguage);
                     return setlanguage.language;
                 }).catch(function (err) {
                     // return default value ;
-                    console.log(err);
                     return 'fr';
                 });
 
@@ -73,13 +69,9 @@ function bookService($q, $window) {
     return {
         initDB: function (API_URL) {
             if (_db === undefined) {
-                console.log("instantiate DB locally and eventually " + API_URL);
                 _db = new PouchDB('bhook', { adapter: 'websql' });
-                PouchDB.debug.enable('*');
-                PouchDB.debug.disable();
                 // PouchDB.replicate('bhook', API_URL + '/bhook', {live: true});
                 _db.info().then(function (info) {
-                    console.log(info);
                 });
 
 
@@ -97,14 +89,11 @@ function bookService($q, $window) {
                     booksbyauthorname = books.rows.map(function (row) {
                         return row.key;
                     });
-                      console.log(books);
                     return booksbyauthorname;
                    
                 }).then(function(booksbyauthorname){
-                     console.log(booksbyauthorname);
                      return booksbyauthorname;
                 }).catch(function (err) {
-                    console.log(err);
                 });
         },
         getAlreadyRead: function (skip) {
@@ -114,9 +103,6 @@ function bookService($q, $window) {
                 limit: 4
             })) 
                 .then(function (books) {
-                    console.log(books);
-                     console.log(books.rows);
-                    console.log('**entering query');
                     var booksbyauthorname;
                     booksbyauthorname = books.rows.map(function (row) {
                         return row.key;
@@ -124,7 +110,6 @@ function bookService($q, $window) {
 
                     return booksbyauthorname;
                 }).catch(function (err) {
-                    console.log(err);
                 });
         },
         saveDatabase: function () {
@@ -137,26 +122,15 @@ function bookService($q, $window) {
             return $q.when(_db.dump(stream)).then(function () {
                 return dumpedString;
             }).catch(function (err) {
-                console.log('oh no an error', err);
             }); 
  
 
-            /*
-                  return $q.when(_db.dump(ws).then(function (res) {
-                    // res should be {ok: true}
-                  })).then(function(res) {
-                      console.log('dump done');
-                        }).catch(function (err) {
-                            console.log(err);
-                        });
-                    */
         },
         restoreDatabase: function(dumpedstring){
             return $q.when(_db.load(dumpedstring)).then(function () {
                  // done loading!
                  return true ;
             }).catch(function (err) {
-                console.log('oh no an error', err);
                 return false ;
             });  
             
@@ -175,7 +149,6 @@ function bookService($q, $window) {
                     });
                     return booksbydate;
                 }).catch(function (err) {
-                    console.log(err);
                 });
 
         },
@@ -186,55 +159,39 @@ function bookService($q, $window) {
             return $http.get(API_URL + '/book').then(function (resp) {
                 return resp.data;
             }).catch(function (err) {
-                console.error('ERR', err);
-
             });
         },
         deleteBook: function (idbbook) {
             return $q.when(_db.get(idbbook).then(function (doc) {
                 return _db.remove(doc);
             }).catch(function (err) {
-                console.log(err);
             })
                 );
         },
         addBook: function (submitData) {
-            console.log("about to submit ");
-            console.log(submitData);
             return $q.when(_db.put(submitData)).then(function (addedbook) {
                 return addedbook;
                 // body...
             }).catch(function (err) {
-                console.log(err);
             }); 
         },
-       updateBook: function (submitData) {     
-           return $q.when(_db.get(submitData._id, {conflicts: true})).then(function (updatedbook) {
-               console.log(updatedbook._rev);
-                return $q.when(_db.put(submitData,updatedbook._rev)).then(function (updatedbook) {
-                    console.log(updatedbook);
+       updateBook: function (submitData) {    
+          return $q.when(_db.get(submitData._id, {conflicts: true})).then(function (updatedbook) {
+               submitData._rev = updatedbook._rev
+                return $q.when(_db.put(submitData)).then(function (updatedbook) {
                     return updatedbook;
                     }).catch(function (err) {
-                        console.log(err);
                     });    
                 // body... 
             }).catch(function (err) {
-                console.log(err);
             });
-        },
-        
-         
+        }, 
         resetDb: function () {
-            if (_db) {
-                
+            if (_db) {      
                 return $q.when(_db.destroy()).then(function () {
-                    // on recree la base vide 
-                    console.log('destroyed');
                     return true ;
                 }).catch(function (err) {
                     // error occurred
-                    console.log("err" + err);
-                    
                 });
             }else{
                 return false ;
