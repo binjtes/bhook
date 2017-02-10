@@ -28,12 +28,20 @@ angular.module('bhook.services', [])
                 languageArr._id = 'applanguage';
                 languageArr.language = language;
                 return $q.when(_dbsettings.get(languageArr._id, {conflicts: true})).then(function (updatelanguage) {
-                        return $q.when(_dbsettings.put(languageArr,updatelanguage._rev)).then(function (addedlanguage) {
+                    languageArr._rev = updatelanguage._rev ;
+                        return $q.when(_dbsettings.put(languageArr)).then(function (addedlanguage) {
                             return addedlanguage;
-                            }).catch(function (err) {
+                        }).catch(function (err) {
                             });    
                         // body...
                     }).catch(function (err) {
+                        // the value is not set yet 
+                        if(err.message == "missing"){
+                               return $q.when(_dbsettings.put(languageArr)).then(function (addedlanguage) {
+                                    return language;
+                               }).catch(function (err) {
+                                }); 
+                        }
                     });                
           
             },
@@ -42,7 +50,7 @@ angular.module('bhook.services', [])
                     return setlanguage.language;
                 }).catch(function (err) {
                     // return default value ;
-                    return 'fr';
+                    return 'en';
                 });
 
             }

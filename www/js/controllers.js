@@ -137,16 +137,13 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
 			}
 		});
 	};
-  
-  
-  
 })
 .controller('DashboardCtrl', function($scope,$http ,API_URL, bookService,settingsService,$ionicModal,$translate ) {
 	bookService.initDB(API_URL);
 
 	 // resolve settings , only local
     settingsService.initDB(); 
-        settingsService.getLanguage().then(function(language){
+    settingsService.getLanguage().then(function(language){
             $translate.use(language) ;
 	 });
 
@@ -565,6 +562,7 @@ angular.module('bhook.controllers', ['bhook.directives','ionic.rating'])
             // get current language value from settingsService
             settingsService.getLanguage().then(function (language) {
                 $translate.use(language);
+
                 $scope.data.selectedLanguage = language;
             });
         });

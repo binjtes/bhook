@@ -29,7 +29,7 @@ $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 		$translateProvider.translations(lang, translations[lang]);
 	}
 
-  $translateProvider.preferredLanguage('fr');
+  $translateProvider.preferredLanguage('en');
 
   $stateProvider
   .state('app', {
